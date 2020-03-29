@@ -1,0 +1,10 @@
+<?php
+
+namespace App\Domains\{{domainCaps}}\Repositories;
+
+use App\Repositories\BaseElasticRepository;
+
+class {{domainCaps}}DetailElasticRepository extends BaseElasticRepository
+{
+    protected $index = '{{domainOriginal}}';
+}

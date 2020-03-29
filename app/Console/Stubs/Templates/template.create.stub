@@ -1,0 +1,50 @@
+<?php
+
+namespace App\Templates;
+
+class {{domainCaps}}Template
+{
+    /**
+     * return template
+     * @return array
+     */
+    public function getTemplate()
+    {
+        return [
+            'index_patterns' => [
+                '{{domainOriginal}}-*'
+            ],
+            'mappings' => [
+                '_source' => [
+                    'enabled' => true,
+                ],
+                'properties' => [
+                    'name' => [
+                        'type' => 'keyword',
+                    ],
+                    'year' => [
+                        'type' => 'integer',
+                    ],
+                    'origin_sector' => [
+                        'type' => 'keyword',
+                    ],
+                    'visits' => [
+                        'type' => 'integer',
+                    ],
+                    'created' => [
+                        'type'=> 'date',
+                        'format' => 'yyyy-MM-dd HH:mm:ss',
+                    ],
+                    'modified' => [
+                        'type'=> 'date',
+                        'format' => 'yyyy-MM-dd HH:mm:ss',
+                    ],
+                    'deleted' => [
+                        'type'=> 'date',
+                        'format' => 'YYYY-MM-dd HH:mm:ss',
+                    ],
+                ],
+            ],
+        ];
+    }
+}

@@ -1,0 +1,45 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+class Create{{domainCaps}}Table extends Migration
+{
+    /**
+     * Run the migrations.
+     * @return void
+     */
+    public function up()
+    {
+        Schema::create('{{domainOriginal}}', function (Blueprint $table) {
+            $table->char('id', 26);
+            $table->string('name', 50);
+            $table->integer('year');
+            $table->string('origin_sector', 100);
+            $table->integer('visits');
+            $table->dateTime('created');
+            $table->dateTime('modified');
+            $table->dateTime('deleted')
+                ->nullable()
+                ->default(null);
+            $table->primary('id');
+            $table->index('name');
+            $table->index('year');
+            $table->index('origin_sector');
+            $table->index('visits');
+            $table->index('created');
+            $table->index('modified');
+            $table->index('deleted');
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     * @return void
+     */
+    public function down()
+    {
+        Schema::dropIfExists('{{domainOriginal}}');
+    }
+}

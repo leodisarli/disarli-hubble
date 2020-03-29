@@ -1,0 +1,68 @@
+<?php
+
+namespace App\Domains\{{domainCaps}}\Repositories;
+
+use App\Repositories\BaseElasticRepository;
+
+class {{domainCaps}}DashboardElasticRepository extends BaseElasticRepository
+{
+    protected $index = '{{domainOriginal}}';
+
+    /**
+     * get dashboard
+     * @param array $data
+     * @return array
+     */
+    public function getDashboard(
+        array $data
+    ): array {
+        $aggregations = [
+            "per_year" => [
+                "terms" => [
+                    "field" => "year",
+                ],
+            ],
+            "per_origin_sector" => [
+                "terms" => [
+                    "field" => "origin_sector",
+                ],
+            ],
+            "total_visits" => [
+                "sum" => [
+                    "field" => "visits",
+                ],
+            ]
+        ];
+
+        $query = [
+            'bool' => [
+                'must' => [
+                    [
+                        'bool' => [
+                            'must_not' => [
+                                'exists' => [
+                                    'field' => 'deleted',
+                                    'boost' => 1,
+                                ],
+                            ]
+                        ]
+                    ],
+                    [
+                        'range' => [
+                            'created' => [
+                                'gte' => $data['from'],
+                                'lte' => $data['to'],
+                                'boost' => 1,
+                            ],
+                        ],
+                    ]
+                ],
+            ],
+        ];
+        $result = $this->getAggregate(
+            $aggregations,
+            $query
+        );
+        return $result;
+    }
+}

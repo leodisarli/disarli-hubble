@@ -1,0 +1,40 @@
+<?php
+
+namespace App\Domains\{{domainCaps}}\Businesses;
+
+use App\Domains\{{domainCaps}}\Repositories\{{domainCaps}}DetailElasticRepository;
+use App\Exceptions\Custom\DataNotFoundException;
+
+class {{domainCaps}}DetailBusiness
+{
+    private ${{domain}}DetailElasticRepository;
+
+    /**
+     * constructor
+     * @param {{domainCaps}}DetailElasticRepository ${{domain}}DetailElasticRepository
+     * @return void
+     */
+    public function __construct(
+        {{domainCaps}}DetailElasticRepository ${{domain}}DetailElasticRepository
+    ) {
+        $this->{{domain}}DetailElasticRepository = ${{domain}}DetailElasticRepository;
+    }
+
+    /**
+     * process the request with business rules
+     * @param string $id
+     * @throws Exception
+     * @return object
+     */
+    public function process(
+        string $id
+    ): array {
+        $result = $this->{{domain}}DetailElasticRepository->getById(
+            $id
+        );
+        if (empty($result)) {
+            throw new DataNotFoundException;
+        }
+        return $result;
+    }
+}

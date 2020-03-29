@@ -1,0 +1,34 @@
+<?php
+
+namespace App\Domains\{{domainCaps}}\Businesses;
+
+use App\Domains\{{domainCaps}}\Repositories\{{domainCaps}}DashboardElasticRepository;
+
+class {{domainCaps}}DashboardBusiness
+{
+    private ${{domain}}DashboardElasticRepository;
+
+    /**
+     * constructor
+     * @param {{domainCaps}}DashboardElasticRepository ${{domain}}DashboardElasticRepository
+     * @return void
+     */
+    public function __construct(
+        {{domainCaps}}DashboardElasticRepository ${{domain}}DashboardElasticRepository
+    ) {
+        $this->{{domain}}DashboardElasticRepository = ${{domain}}DashboardElasticRepository;
+    }
+
+    /**
+     * process the request with business rules
+     * @param array $data
+     * @return array
+     */
+    public function process(
+        array $data
+    ): array {
+        return $this->{{domain}}DashboardElasticRepository->getDashboard(
+            $data
+        );
+    }
+}

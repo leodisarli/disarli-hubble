@@ -1,0 +1,1 @@
+# Lumen Microservice to index and read data from ElasticSearch (perfect for business inteligence and reports)

@@ -1,0 +1,22 @@
+<?php
+
+namespace App\Domains\{{domainCaps}}\Http\Validators;
+
+use App\Http\Validators\BaseValidator;
+
+class {{domainCaps}}AddValidator extends BaseValidator
+{
+    /**
+     * get rules for this request
+     * @return array
+     */
+    public function getRules(): array
+    {
+        return [
+            'name' => 'required|string|max:50',
+            'year' => 'required|integer|min:2016|max:2999',
+            'origin_sector' => 'required|string|max:100',
+            'visits' => 'required|integer',
+        ];
+    }
+}

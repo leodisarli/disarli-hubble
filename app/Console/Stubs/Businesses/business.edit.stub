@@ -1,0 +1,63 @@
+<?php
+
+namespace App\Domains\{{domainCaps}}\Businesses;
+
+use App\Domains\{{domainCaps}}\Repositories\{{domainCaps}}EditRepository;
+use App\Domains\{{domainCaps}}\Repositories\{{domainCaps}}EditElasticRepository;
+use App\Exceptions\Custom\DataNotFoundException;
+
+class {{domainCaps}}EditBusiness
+{
+    private ${{domain}}EditRepository;
+    private ${{domain}}EditElasticRepository;
+
+    /**
+     * constructor
+     * @param {{domainCaps}}EditRepository ${{domain}}EditRepository
+     * @param {{domainCaps}}EditElasticRepository ${{domain}}EditElasticRepository
+     * @return void
+     */
+    public function __construct(
+        {{domainCaps}}EditRepository ${{domain}}EditRepository,
+        {{domainCaps}}EditElasticRepository ${{domain}}EditElasticRepository
+    ) {
+        $this->{{domain}}EditRepository = ${{domain}}EditRepository;
+        $this->{{domain}}EditElasticRepository = ${{domain}}EditElasticRepository;
+    }
+
+    /**
+     * process the request with business rules
+     * @param array $data
+     * @param string $id
+     * @throws Exception
+     * @return object
+     */
+    public function process(
+        array $data,
+        string $id
+    ) {
+        $exists = $this->{{domain}}EditRepository->getById(
+            $id
+        );
+        if (empty($exists)) {
+            throw new DataNotFoundException;
+        }
+        $this->{{domain}}EditRepository->update(
+            $data,
+            $id
+        );
+
+        $allData = (array) $this->{{domain}}EditRepository->getById(
+            $id
+        );
+        $exactIndex = $this->{{domain}}EditElasticRepository->getIndexById(
+            $id
+        );
+        $this->{{domain}}EditElasticRepository->update(
+            $allData,
+            $id,
+            $exactIndex
+        );
+        return $allData;
+    }
+}
