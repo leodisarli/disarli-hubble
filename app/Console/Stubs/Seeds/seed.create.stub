@@ -18,7 +18,7 @@ class {{domainCaps}}Seed
                 ],
                 'year' => [
                     'type' => 'integer',
-                    'min' => 2007,
+                    'min' => 2016,
                     'max' => 2020,
                 ],
                 'origin_sector' => [

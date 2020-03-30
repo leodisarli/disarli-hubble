@@ -78,27 +78,56 @@ class RandomSeedIndexCommand extends BaseCommand
         $indexName = $seedClass['index'];
         $indexFields = $seedClass['fields'];
 
+        $config = $this->getConfig('tokens');
+        $token = array_key_first($config['data']);
+        $secret = $config['data'][$token]['secret'];
+        $context = $config['data'][$token]['name'];
+
+        $authUrl = 'localhost:8101/auth/generate';
+        $authRequest = [
+            'headers' => [
+                'Content-Type' => 'application/json',
+                'Accept' => 'application/json',
+            ],
+            'json' => [
+                'token' => $token,
+                'secret' => $secret,
+            ],
+        ];
+        $guzzle = $this->newGuzzle();
+        $authResponse = $guzzle->POST(
+            $authUrl,
+            $authRequest
+        );
+
+        $authData = json_decode($authResponse->getBody()->getContents(), true);
+        $jwtToken = $authData['data']['token'];
+
         for ($i = 0; $i < $rows; $i++) {
             echo '.';
             $saveData = [];
             foreach ($indexFields as $field => $params) {
                 $saveData[$field] = $this->getRandomValue($params);
             }
-            $guzzle = $this->newGuzzle();
 
             $url = 'localhost:8101/' . $indexName . '/add';
             $request = [
                 'headers' => [
                     'Content-Type' => 'application/json',
                     'Accept' => 'application/json',
+                    'Authorization' => $jwtToken,
+                    'Context' => $context,
                 ],
                 'json' => $saveData,
             ];
 
-            $guzzle->POST(
+            $response = $guzzle->POST(
                 $url,
                 $request
             );
+
+            $reponseData = json_decode($response->getBody()->getContents(), true);
+            $jwtToken = $reponseData['token']['token'];
         }
 
         $this->info('');

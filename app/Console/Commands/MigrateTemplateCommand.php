@@ -30,7 +30,7 @@ class MigrateTemplateCommand extends BaseCommand
         $arguments = [
             ['name', InputArgument::REQUIRED, 'Domain name.'],
         ];
-        return $arguments; 
+        return $arguments;
     }
 
     /**
@@ -54,9 +54,9 @@ class MigrateTemplateCommand extends BaseCommand
         $elastic = $this->newSimpleElasticsearch(
             $config['host']
         );
-        
 
-        $class =  '\App\Templates\\'. $domainCaps . 'Template';
+
+        $class =  '\App\Templates\\' . $domainCaps . 'Template';
         $templateClass = $this->newTemplate($class);
         $template = $templateClass->getTemplate();
 
@@ -66,7 +66,7 @@ class MigrateTemplateCommand extends BaseCommand
         );
 
         print_r($putTemplate);
-        
+
         $this->info('');
         $this->info('All done!');
     }
@@ -76,32 +76,20 @@ class MigrateTemplateCommand extends BaseCommand
      * create new Template instance
      * @return mixed
      */
-	public function newTemplate(
+    public function newTemplate(
         string $name
     ) {
-		return new $name();
-	}
+        return new $name();
+    }
 
     /**
      * @codeCoverageIgnore
      * create new SimpleElasticsearch instance
      * @return SimpleElasticsearch
      */
-	public function newSimpleElasticsearch(
+    public function newSimpleElasticsearch(
         string $host
     ): SimpleElasticsearch {
-		return new SimpleElasticsearch($host);
-	}
-
-    /**
-     * @codeCoverageIgnore
-     * get lumen config
-     * @param string $config
-     * @return array
-     */
-	public function getConfig(
-		string $config
-	): array {
-		return config($config) ?? [];
-	}
+        return new SimpleElasticsearch($host);
+    }
 }

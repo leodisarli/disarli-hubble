@@ -29,4 +29,16 @@ class BaseCommand extends Command
         }
         return $domain;
     }
+
+    /**
+     * @codeCoverageIgnore
+     * get lumen config
+     * @param string $config
+     * @return array
+     */
+	public function getConfig(
+		string $config
+	): array {
+		return config($config) ?? [];
+	}
 }

@@ -17,6 +17,11 @@ class {{domainCaps}}DashboardElasticRepository extends BaseElasticRepository
         array $data
     ): array {
         $aggregations = [
+            "total" => [
+                "value_count" => [
+                    "field" => "_id",
+                ],
+            ],
             "per_year" => [
                 "terms" => [
                     "field" => "year",
