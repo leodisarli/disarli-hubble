@@ -2,9 +2,10 @@
 
 namespace App\Console\Commands;
 
-use Illuminate\Console\Command;
+use App\Console\Commands\BaseCommand;
+use Symfony\Component\Console\Input\InputArgument;
 
-class CreateDomainCommand extends Command
+class CreateDomainCommand extends BaseCommand
 {
     protected $signature = 'create:domain {domain}';
     protected $description = 'Create new hole domain';
@@ -123,6 +124,12 @@ class CreateDomainCommand extends Command
                 '{{domainCaps}}Template' => 'template.create',
             ],
         ],
+        'Seeds' => [
+            'url' => '/Seeds/',
+            'files' => [
+                '{{domainCaps}}Seed' => 'seed.create',
+            ],
+        ],
     ];
     protected $fromRoot = [
         'TestUnitBusinesses' => 'Unit',
@@ -130,6 +137,7 @@ class CreateDomainCommand extends Command
     ];
     protected $fromApp = [
         'Templates' => 'Templates',
+        'Seeds' => 'Seeds',
     ];
 
     /**
@@ -201,30 +209,6 @@ class CreateDomainCommand extends Command
         if (!file_exists($holePath)) {
             mkdir($holePath, 0777, true);
         }
-    }
-
-    /**
-     * prepare domain name
-     * @param string $domain
-     * @return string domain
-     */
-    private function prepareDomainName(
-        string $domain
-    ) {
-        $domain = strtolower($domain);
-        if (strpos($domain, '_') !== false) {
-            $domainArray = explode('_', $domain);
-            $name = '';
-            foreach ($domainArray as $partialName) {
-                if (empty($name)) {
-                    $name .= $partialName;
-                    continue;
-                }
-                $name .= ucfirst($partialName);
-            }
-            return $name;
-        }
-        return $domain;
     }
 
     /**

@@ -2,10 +2,11 @@
 
 namespace App\Console\Commands;
 
-use Illuminate\Console\Command;
+use App\Console\Commands\BaseCommand;
 use SimpleElasticsearch\SimpleElasticsearch;
+use Symfony\Component\Console\Input\InputArgument;
 
-class MigrateTemplateCommand extends Command
+class MigrateTemplateCommand extends BaseCommand
 {
     protected $signature = 'migrate:template {domain}';
     protected $description = 'Migrate a mapping into elastic';
@@ -30,30 +31,6 @@ class MigrateTemplateCommand extends Command
             ['name', InputArgument::REQUIRED, 'Domain name.'],
         ];
         return $arguments; 
-    }
-
-    /**
-     * prepare domain name
-     * @param string $domain
-     * @return string domain
-     */
-    private function prepareDomainName(
-        string $domain
-    ) {
-        $domain = strtolower($domain);
-        if (strpos($domain, '_') !== false) {
-            $domainArray = explode('_', $domain);
-            $name = '';
-            foreach ($domainArray as $partialName) {
-                if (empty($name)) {
-                    $name .= $partialName;
-                    continue;
-                }
-                $name .= ucfirst($partialName);
-            }
-            return $name;
-        }
-        return $domain;
     }
 
     /**

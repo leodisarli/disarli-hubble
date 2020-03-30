@@ -45,6 +45,5 @@
         </properties>
     </rule>
     <exclude-pattern>app/Exceptions/Handler.php</exclude-pattern>
-    <exclude-pattern>app/Console/Commands/CreateDomainCommand.php</exclude-pattern>
-    <exclude-pattern>app/Console/Commands/MigrateTemplateCommand.php</exclude-pattern>
+    <exclude-pattern>app/Console/Commands/*</exclude-pattern>
 </ruleset>
