@@ -266,11 +266,14 @@ abstract class BaseElasticRepository
         }
 
         $data['id'] = $id;
-        $data['created'] = date('Y-m-d H:i:s');
+        if (!isset($data['created']) || empty($data['created'])) {
+            $data['created'] = date('Y-m-d H:i:s');
+        }
         $data['modified'] = date('Y-m-d H:i:s');
+        $postfix = substr($data['created'], 0, 7);
 
         $this->elastic->postDocument(
-            $this->index . '-' . date('Y-m'),
+            $this->index . '-' . $postfix,
             $data,
             $id
         );

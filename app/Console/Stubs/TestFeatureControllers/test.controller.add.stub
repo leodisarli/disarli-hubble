@@ -22,8 +22,8 @@ class {{domainCaps}}AddControllerTest extends TestCaseFeature
                 'name' => [
                     'The name field is required.'
                 ],
-                'year' => [
-                    'The year field is required.'
+                'age' => [
+                    'The age field is required.'
                 ],
                 'origin_sector' => [
                     'The origin sector field is required.'
@@ -40,7 +40,7 @@ class {{domainCaps}}AddControllerTest extends TestCaseFeature
         $this->assertArrayHasKey('message', $result);
         $this->assertEquals('A validation error occurrs', $result['message']);
         $this->assertEquals($response['data']['name'], $result['data']['name']);
-        $this->assertEquals($response['data']['year'], $result['data']['year']);
+        $this->assertEquals($response['data']['age'], $result['data']['age']);
         $this->assertEquals($response['data']['origin_sector'], $result['data']['origin_sector']);
         $this->assertEquals($response['data']['visits'], $result['data']['visits']);
     }
@@ -55,7 +55,7 @@ class {{domainCaps}}AddControllerTest extends TestCaseFeature
     {
         $data = [
             'name' => 'test',
-            'year' => 2020,
+            'age' => 18,
             'origin_sector' => 'test',
             'visits' => 16,
         ];

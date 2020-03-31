@@ -15,7 +15,7 @@ class Create{{domainCaps}}Table extends Migration
         Schema::create('{{domainOriginal}}', function (Blueprint $table) {
             $table->char('id', 26);
             $table->string('name', 50);
-            $table->integer('year');
+            $table->integer('age');
             $table->string('origin_sector', 100);
             $table->integer('visits');
             $table->dateTime('created');
@@ -25,7 +25,7 @@ class Create{{domainCaps}}Table extends Migration
                 ->default(null);
             $table->primary('id');
             $table->index('name');
-            $table->index('year');
+            $table->index('age');
             $table->index('origin_sector');
             $table->index('visits');
             $table->index('created');

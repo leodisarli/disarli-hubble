@@ -22,7 +22,7 @@ class {{domainCaps}}Template
                     'name' => [
                         'type' => 'keyword',
                     ],
-                    'year' => [
+                    'age' => [
                         'type' => 'integer',
                     ],
                     'origin_sector' => [

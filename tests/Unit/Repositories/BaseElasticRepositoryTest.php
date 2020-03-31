@@ -416,6 +416,47 @@ class BaseElasticRepositoryTest extends TestCase
     /**
      * @covers \App\Repositories\BaseElasticRepository::insert
      */
+    public function testInsertWithDate()
+    {
+        $id = '01E4DWNQ04V6CRWAKSZP76N4CR';
+        $data = [
+            'id' => $id,
+            'created' => '2020-01-05 23:34:11',
+        ];
+
+        $ulidMock = Mockery::mock(Ulid::class);
+        $ulidMock->shouldReceive('generate')
+            ->once()
+            ->andReturn($id);
+
+        $elasticMock = Mockery::mock(
+            'overload:SimpleElasticsearch\SimpleElasticsearch'
+        );
+
+        $elasticMock->shouldReceive('postDocument')
+            ->once()
+            ->andReturn(true);
+
+        $baseElasticRepository = $this->getMockForAbstractClass(
+            BaseElasticRepository::class,
+            [
+                $ulidMock
+            ]
+        );
+
+        $result = $baseElasticRepository->insert(
+            $data
+        );
+
+        $this->assertEquals(
+            $id,
+            $result
+        );
+    }
+
+    /**
+     * @covers \App\Repositories\BaseElasticRepository::insert
+     */
     public function testInsert()
     {
         $id = '01E4DWNQ04V6CRWAKSZP76N4CR';

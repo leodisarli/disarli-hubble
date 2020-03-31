@@ -19,7 +19,7 @@ class {{domainCaps}}DeleteControllerTest extends TestCaseFeature
     {
         $data = [
             'name' => 'test',
-            'year' => 2020,
+            'age' => 18,
             'origin_sector' => 'test',
             'visits' => 16,
         ];

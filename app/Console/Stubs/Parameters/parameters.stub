@@ -12,7 +12,7 @@ class {{domainCaps}}Parameters extends BaseParameters
     public $fields = [
         'id',
         'name',
-        'year',
+        'age',
         'origin_sector',
         'visits',
         'created',

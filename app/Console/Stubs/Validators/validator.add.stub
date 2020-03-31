@@ -14,9 +14,10 @@ class {{domainCaps}}AddValidator extends BaseValidator
     {
         return [
             'name' => 'required|string|max:50',
-            'year' => 'required|integer|min:2016|max:2999',
+            'age' => 'required|integer|min:1|max:99',
             'origin_sector' => 'required|string|max:100',
             'visits' => 'required|integer',
+            'created' => 'date_format:Y-m-d H:i:s',
         ];
     }
 }

@@ -22,9 +22,9 @@ class {{domainCaps}}DashboardElasticRepository extends BaseElasticRepository
                     "field" => "_id",
                 ],
             ],
-            "per_year" => [
+            "per_age" => [
                 "terms" => [
-                    "field" => "year",
+                    "field" => "age",
                 ],
             ],
             "per_origin_sector" => [

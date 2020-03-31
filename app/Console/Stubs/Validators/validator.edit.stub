@@ -14,7 +14,7 @@ class {{domainCaps}}EditValidator extends BaseValidator
     {
         return [
             'name' => 'string|max:50',
-            'year' => 'integer|min:2016|max:2999',
+            'age' => 'integer|min:1|max:99',
             'origin_sector' => 'string|max:100',
             'visits' => 'integer',
         ];

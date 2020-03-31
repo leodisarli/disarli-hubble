@@ -162,7 +162,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"test\",\n    \"year\": 2020,\n    \"origin_sector\": \"sector\",\n    \"visits\": 5\n}"
+							"raw": "{\n    \"name\": \"test\",\n    \"age\": 18,\n    \"origin_sector\": \"sector\",\n    \"visits\": 5\n}"
 						},
 						"url": {
 							"raw": "{{Host}}/example/add",
@@ -305,7 +305,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"test2\",\n    \"year\" : 2025\n}"
+							"raw": "{\n    \"name\": \"test2\",\n    \"age\" : 18\n}"
 						},
 						"url": {
 							"raw": "{{Host}}/example/edit/{{ulid}}",

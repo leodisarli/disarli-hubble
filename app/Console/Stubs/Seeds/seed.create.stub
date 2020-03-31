@@ -16,10 +16,10 @@ class {{domainCaps}}Seed
                 'name' => [
                     'type' => 'name',
                 ],
-                'year' => [
+                'age' => [
                     'type' => 'integer',
-                    'min' => 2016,
-                    'max' => 2020,
+                    'min' => 1,
+                    'max' => 99,
                 ],
                 'origin_sector' => [
                     'type' => 'list',
@@ -35,6 +35,11 @@ class {{domainCaps}}Seed
                     'type' => 'integer',
                     'min' => 0,
                     'max' => 100,
+                ],
+                'created' => [
+                    'type' => 'date',
+                    'min_year' => 2016,
+                    'max_year' => 2020,
                 ],
             ],
         ];

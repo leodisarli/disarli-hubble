@@ -14,9 +14,10 @@ class RandomSeedIndexCommand extends BaseCommand
     protected $description = 'Seed random data to an index into elastic';
 
     private $allowedTypes = [
+        'date',
         'integer',
-        'name',
         'list',
+        'name',
     ];
 
     /**
@@ -208,6 +209,30 @@ class RandomSeedIndexCommand extends BaseCommand
         $last = count($params['values']) - 1;
         $index = rand(0, $last);
         return $params['values'][$index];
+    }
+
+    /**
+     * generate random item for date
+     * @param array $params
+     * @return string
+     */
+    public function generateDate(
+        array $params
+    ) : string {
+        if (!isset($params['min_year'])){
+            $params['min_year'] = 1970;
+        }
+        if (!isset($params['max_year'])){
+            $params['max_year'] = (int) date('Y');
+        }
+        if (!is_int($params['min_year']) || !is_int($params['max_year'])){
+            $this->error('Parameters min_year and max_year values must be integer');
+            die;
+        }
+        $firstDay = strtotime($params['min_year'] . '-01-01 00:00:00');
+        $lastDay = strtotime($params['max_year'] . '-12-31 23:59:59');
+        $randomTimestamp = rand($firstDay, $lastDay);
+        return date('Y-m-d H:i:s', $randomTimestamp);
     }
 
     /**
