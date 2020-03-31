@@ -8,6 +8,10 @@
 /coverage
 /nbproject
 /storage/*
+!/storage/.db
+!/storage/.elastic
+/storage/.db/*
+/storage/.elastic/*
 /vendor
 docker-compose.override.yml
 !/**/.gitkeep
