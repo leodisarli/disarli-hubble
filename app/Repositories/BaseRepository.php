@@ -194,7 +194,9 @@ abstract class BaseRepository
         }
 
         $data['id'] = $id;
-        $data['created'] = date('Y-m-d H:i:s');
+        if (!isset($data['created']) || empty($data['created'])) {
+            $data['created'] = date('Y-m-d H:i:s');
+        }
         $data['modified'] = date('Y-m-d H:i:s');
 
         $this->db->table($this->table)

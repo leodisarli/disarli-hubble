@@ -364,6 +364,44 @@ class BaseRepositoryTest extends TestCase
         $data = [
             'id' => $id,
             'name' => 'teste',
+        ];
+
+        $dbMock = Mockery::mock(DatabaseManager::class)
+            ->shouldReceive('table')
+            ->andReturnSelf()
+            ->shouldReceive('insert')
+            ->andReturnSelf()
+            ->getMock();
+
+        $ulidMock = Mockery::mock(Ulid::class)
+            ->shouldReceive('generate')
+            ->withNoArgs()
+            ->andReturn($id)
+            ->getMock();
+
+        $baseRepository = $this->getMockForAbstractClass(
+            BaseRepository::class,
+            [
+                $dbMock,
+                $ulidMock
+            ]
+        );
+
+        $insert = $baseRepository->insert($data);
+
+        $this->assertEquals($insert, $id);
+    }
+
+        /**
+     * @covers \App\Repositories\BaseRepository::insert
+     */
+    public function testInsertWithCreated()
+    {
+        $id = '123456';
+
+        $data = [
+            'id' => $id,
+            'name' => 'teste',
             'created' => date('Y-m-d H:i:s'),
             'modified' => date('Y-m-d H:i:s'),
         ];
