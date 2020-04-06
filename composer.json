@@ -47,7 +47,7 @@
             "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
         ],
         "post-install-cmd": [
-            "bash contrib/setup.sh",
+            "bash contrib/setup.sh"
         ],
         "checkall" : [
             "@lint",
