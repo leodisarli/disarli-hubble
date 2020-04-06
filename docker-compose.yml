@@ -52,3 +52,17 @@ services:
     ports:
       - 9200:9200
       - 9300:9300
+
+  hubble-kibana:
+    image: docker.elastic.co/kibana/kibana:7.1.1
+    container_name: hubble-kibana
+    environment:
+      SERVER_NAME: hubble-elastic
+      ELASTICSEARCH_HOSTS: http://hubble-elastic:9200/
+    ports:
+      - 5601:5601
+    ulimits:
+      nproc: 65535
+      memlock:
+        soft: -1
+        hard: -1
