@@ -48,7 +48,6 @@
         ],
         "post-install-cmd": [
             "bash contrib/setup.sh",
-            "chmod 777 -R ./storage"
         ],
         "checkall" : [
             "@lint",

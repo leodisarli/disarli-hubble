@@ -1,7 +1,7 @@
 version: '2'
 services:
   hubble-nginx:
-    build: ./docker/nginx/.
+    build: ./docker/dev/nginx/.
     container_name: hubble-nginx
     depends_on:
       - hubble-php
@@ -11,7 +11,7 @@ services:
       - ./:/var/www/html
 
   hubble-php:
-    build: ./docker/php-clear/.
+    build: ./docker/dev/php-clear/.
     container_name: hubble-php
     volumes:
       - ./:/var/www/html
