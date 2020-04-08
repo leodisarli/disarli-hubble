@@ -46,4 +46,6 @@
     </rule>
     <exclude-pattern>app/Exceptions/Handler.php</exclude-pattern>
     <exclude-pattern>app/Console/Commands/*</exclude-pattern>
+    <exclude-pattern>app/Seeds/*</exclude-pattern>
+    <exclude-pattern>app/Templates/*</exclude-pattern>
 </ruleset>
