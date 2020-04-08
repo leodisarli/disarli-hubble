@@ -14,7 +14,7 @@ class {{domainCaps}}BulkValidator extends BaseValidator
     {
         return [
             'ids' => 'required|array',
-            'ids.*' => 'string|ulid',
+            'ids.*' => 'required|string|ulid',
             'page' => 'integer|min:1',
         ];
     }
