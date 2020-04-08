@@ -356,6 +356,7 @@ class BaseRepositoryTest extends TestCase
 
     /**
      * @covers \App\Repositories\BaseRepository::insert
+     * @covers \App\Repositories\BaseRepository::arrayToJson
      */
     public function testInsert()
     {
@@ -364,6 +365,9 @@ class BaseRepositoryTest extends TestCase
         $data = [
             'id' => $id,
             'name' => 'teste',
+            'array' => [
+                'key' => 'value',
+            ],
         ];
 
         $dbMock = Mockery::mock(DatabaseManager::class)

@@ -65,9 +65,9 @@ abstract class BaseRepository
         array $fields,
         string $order,
         string $class,
-        ? array $filters,
+        ?array $filters,
         array $query
-    ) : array {
+    ): array {
         $page = 1;
         if (isset($query['page'])) {
             $page = $query['page'];
@@ -121,9 +121,9 @@ abstract class BaseRepository
         array $fields,
         string $order,
         string $class,
-        ? array $filters,
+        ?array $filters,
         array $query
-    ) : array {
+    ): array {
         $page = 1;
         if (isset($query['page'])) {
             $page = $query['page'];
@@ -140,7 +140,7 @@ abstract class BaseRepository
         );
 
         $list = $this->setFilters($list, $filters);
-        
+
         $list = $list->orderBy($order, $class)
             ->paginate(25, ['*'], 'page', $page);
 
@@ -165,7 +165,7 @@ abstract class BaseRepository
         string $order,
         string $class,
         array $query
-    ) : array {
+    ): array {
         $list = $this->db->table($this->table)
             ->select($fields)
             ->whereNull('deleted')
@@ -188,7 +188,10 @@ abstract class BaseRepository
     public function insert(
         array $data,
         string $id = null
-    ) : string {
+    ): string {
+        $data = $this->arrayToJson(
+            $data
+        );
         if (!$id) {
             $id = $this->ulid->generate();
         }
@@ -213,7 +216,7 @@ abstract class BaseRepository
     public function update(
         array $data,
         string $id
-    ) : bool {
+    ): bool {
         $data['modified'] = date('Y-m-d H:i:s');
         $this->db->table($this->table)
             ->where('id', $id)
@@ -229,7 +232,7 @@ abstract class BaseRepository
      */
     public function delete(
         string $id
-    ) : bool {
+    ): bool {
         $data = [];
         $data['modified'] = date('Y-m-d H:i:s');
         $data['deleted'] = date('Y-m-d H:i:s');
@@ -248,7 +251,7 @@ abstract class BaseRepository
      */
     protected function setFilters(
         $list,
-        ? array $filters
+        ?array $filters
     ) {
         if (empty($filters)) {
             return $list;
@@ -260,7 +263,7 @@ abstract class BaseRepository
                     $list->where($key, $map['signal'], $filter['data']);
                     break;
                 case FiltersTypesConstants::ACTION_WHERE_LIKE:
-                    $data = '%'.$filter['data'].'%';
+                    $data = '%' . $filter['data'] . '%';
                     $list->where($key, $map['signal'], $data);
                     break;
                 case FiltersTypesConstants::ACTION_WHERE_NULL:
@@ -272,5 +275,21 @@ abstract class BaseRepository
             }
         }
         return $list;
+    }
+
+    /**
+     * convert array fields to json
+     * @param array $data
+     * @return array
+     */
+    protected function arrayToJson(
+        array $data
+    ) {
+        foreach ($data as $field => $value) {
+            if (is_array($value)) {
+                $data[$field] = json_encode($value);
+            }
+        }
+        return $data;
     }
 }

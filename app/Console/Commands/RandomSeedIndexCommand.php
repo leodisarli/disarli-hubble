@@ -15,9 +15,14 @@ class RandomSeedIndexCommand extends BaseCommand
 
     private $allowedTypes = [
         'date',
+        'fixed',
+        'float',
+        'geo',
+        'geobr',
         'integer',
         'list',
         'name',
+        'word',
     ];
 
     /**
@@ -34,7 +39,7 @@ class RandomSeedIndexCommand extends BaseCommand
      * get the console command arguments
      * @return array
      */
-    protected function getArguments()
+    protected function getArguments(): array
     {
         $arguments = [
             [
@@ -51,7 +56,7 @@ class RandomSeedIndexCommand extends BaseCommand
 
     /**
      * execute the console command
-     * @return mixed
+     * @return void
      */
     public function handle()
     {
@@ -159,35 +164,115 @@ class RandomSeedIndexCommand extends BaseCommand
     }
 
     /**
-     * generate random string
-     * @param string $name
+     * generate random name
      * @param array $params
-     * @return mixed
+     * @return string
      */
-    public function generateName()
+    public function generateName(): string
     {
         $faker = $this->newFaker();
         return $faker->firstNameMale . ' ' . $faker->lastName;
     }
 
     /**
-     * generate random integer
-     * @param string $name
+     * generate random word
+     * @return mixed
+     */
+    public function generateWord(): string
+    {
+        $faker = $this->newFaker();
+        return $faker->word;
+    }
+
+    /**
+     * generate random geo positions
+     * @param array $params
+     * @return array
+     */
+    public function generateGeo(): array
+    {
+        $faker = $this->newFaker();
+        return [
+            [
+                'lat' => $faker->latitude,
+                'lon' => $faker->longitude,
+            ]
+        ];
+    }
+
+    /**
+     * generate random geo positions in brasil
+     * @return array
+     */
+    public function generateGeobr(): array
+    {
+        $faker = $this->newFaker();
+        return [
+            [
+                'lat' => $faker->latitude(
+                    -33.69111,
+                    2.81972
+                ),
+                'lon' => $faker->longitude(
+                    -77.89583,
+                    -34.80861
+                ),
+            ],
+        ];
+    }
+
+    /**
+     * pass fixed value
      * @param array $params
      * @return mixed
      */
+    public function generateFixed(
+        array $params
+    ) {
+        return $params['value'];
+    }
+
+    /**
+     * generate random integer
+     * @param array $params
+     * @return int
+     */
     public function generateInteger(
         array $params
-    ) : int {
-        if (!isset($params['min']) || !isset($params['max'])){
+    ): int {
+        if (!isset($params['min']) || !isset($params['max'])) {
             $this->error('Missing int parameters min and/or max');
             die;
         }
-        if (!is_int($params['min']) || !is_int($params['max'])){
+        if (!is_int($params['min']) || !is_int($params['max'])) {
             $this->error('Int parameters min and max must be integer');
             die;
         }
         return rand($params['min'], $params['max']);
+    }
+
+    /**
+     * generate random float
+     * @param array $params
+     * @return mixed
+     */
+    public function generateFloat(
+        array $params
+    ): float {
+        if (!isset($params['min']) || !isset($params['max'])) {
+            $this->error('Missing int parameters min and/or max');
+            die;
+        }
+        if (!is_int($params['min']) || !is_int($params['max'])) {
+            $this->error('Int parameters min and max must be integer');
+            die;
+        }
+        $int = rand($params['min'], $params['max']);
+        $decimals = 0;
+        if ($int !== $params['max']) {
+            $decimals = rand(0, 99);
+        }
+        return (float) $int . '.' . $decimals;
     }
 
     /**
@@ -197,12 +282,12 @@ class RandomSeedIndexCommand extends BaseCommand
      */
     public function generateList(
         array $params
-    ) : string {
-        if (!isset($params['values'])){
+    ): string {
+        if (!isset($params['values'])) {
             $this->error('Missing list parameter values');
             die;
         }
-        if (!is_array($params['values'])){
+        if (!is_array($params['values'])) {
             $this->error('List parameter values must be an array');
             die;
         }
@@ -218,14 +303,14 @@ class RandomSeedIndexCommand extends BaseCommand
      */
     public function generateDate(
         array $params
-    ) : string {
-        if (!isset($params['min_year'])){
+    ): string {
+        if (!isset($params['min_year'])) {
             $params['min_year'] = 1970;
         }
-        if (!isset($params['max_year'])){
+        if (!isset($params['max_year'])) {
             $params['max_year'] = (int) date('Y');
         }
-        if (!is_int($params['min_year']) || !is_int($params['max_year'])){
+        if (!is_int($params['min_year']) || !is_int($params['max_year'])) {
             $this->error('Parameters min_year and max_year values must be integer');
             die;
         }
