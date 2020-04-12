@@ -423,12 +423,9 @@ class BaseElasticRepositoryTest extends TestCase
             'id' => $id,
             'created' => '2020-01-05 23:34:11',
         ];
-<<<<<<< HEAD
-=======
         $elasticResult = [
             '_index' => $id
         ];
->>>>>>> feature/transactions
 
         $ulidMock = Mockery::mock(Ulid::class);
         $ulidMock->shouldReceive('generate')
@@ -441,11 +438,7 @@ class BaseElasticRepositoryTest extends TestCase
 
         $elasticMock->shouldReceive('postDocument')
             ->once()
-<<<<<<< HEAD
-            ->andReturn(true);
-=======
             ->andReturn($elasticResult);
->>>>>>> feature/transactions
 
         $baseElasticRepository = $this->getMockForAbstractClass(
             BaseElasticRepository::class,
@@ -473,12 +466,9 @@ class BaseElasticRepositoryTest extends TestCase
         $data = [
             'id' => $id,
         ];
-<<<<<<< HEAD
-=======
         $elasticResult = [
             '_index' => $id
         ];
->>>>>>> feature/transactions
 
         $ulidMock = Mockery::mock(Ulid::class);
         $ulidMock->shouldReceive('generate')
@@ -491,11 +481,7 @@ class BaseElasticRepositoryTest extends TestCase
 
         $elasticMock->shouldReceive('postDocument')
             ->once()
-<<<<<<< HEAD
-            ->andReturn(true);
-=======
             ->andReturn($elasticResult);
->>>>>>> feature/transactions
 
         $baseElasticRepository = $this->getMockForAbstractClass(
             BaseElasticRepository::class,
@@ -515,8 +501,6 @@ class BaseElasticRepositoryTest extends TestCase
     }
 
     /**
-<<<<<<< HEAD
-=======
      * @covers \App\Repositories\BaseElasticRepository::insert
      */
     public function testInsertError()
@@ -560,7 +544,6 @@ class BaseElasticRepositoryTest extends TestCase
     }
 
     /**
->>>>>>> feature/transactions
      * @covers \App\Repositories\BaseElasticRepository::update
      */
     public function testUpdate()
@@ -570,12 +553,9 @@ class BaseElasticRepositoryTest extends TestCase
             'id' => $id,
         ];
         $index = 'test-2020-03';
-<<<<<<< HEAD
-=======
         $elasticResult = [
             '_index' => $id
         ];
->>>>>>> feature/transactions
 
         $ulidSpy = Mockery::spy(Ulid::class);
         $elasticMock = Mockery::mock(
@@ -584,11 +564,7 @@ class BaseElasticRepositoryTest extends TestCase
 
         $elasticMock->shouldReceive('postDocument')
             ->once()
-<<<<<<< HEAD
-            ->andReturn(true);
-=======
             ->andReturn($elasticResult);
->>>>>>> feature/transactions
 
         $baseElasticRepository = $this->getMockForAbstractClass(
             BaseElasticRepository::class,
@@ -609,8 +585,6 @@ class BaseElasticRepositoryTest extends TestCase
     }
 
     /**
-<<<<<<< HEAD
-=======
      * @covers \App\Repositories\BaseElasticRepository::update
      */
     public function testUpdateError()
@@ -653,7 +627,6 @@ class BaseElasticRepositoryTest extends TestCase
     }
 
     /**
->>>>>>> feature/transactions
      * @covers \App\Repositories\BaseElasticRepository::delete
      */
     public function testDelete()
@@ -663,12 +636,9 @@ class BaseElasticRepositoryTest extends TestCase
             'id' => $id,
         ];
         $index = 'test-2020-03';
-<<<<<<< HEAD
-=======
         $elasticResult = [
             '_index' => $id
         ];
->>>>>>> feature/transactions
 
         $ulidSpy = Mockery::spy(Ulid::class);
         $elasticMock = Mockery::mock(
@@ -677,11 +647,7 @@ class BaseElasticRepositoryTest extends TestCase
 
         $elasticMock->shouldReceive('postDocument')
             ->once()
-<<<<<<< HEAD
-            ->andReturn(true);
-=======
             ->andReturn($elasticResult);
->>>>>>> feature/transactions
 
         $baseElasticRepository = $this->getMockForAbstractClass(
             BaseElasticRepository::class,
@@ -702,8 +668,6 @@ class BaseElasticRepositoryTest extends TestCase
     }
 
     /**
-<<<<<<< HEAD
-=======
      * @covers \App\Repositories\BaseElasticRepository::delete
      */
     public function testDeleteError()
@@ -747,7 +711,6 @@ class BaseElasticRepositoryTest extends TestCase
     }
 
     /**
->>>>>>> feature/transactions
      * @covers \App\Repositories\BaseElasticRepository::decodeMultipleResults
      */
     public function testDecodeMultipleResults()

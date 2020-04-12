@@ -35,11 +35,7 @@ class BaseRepositoryTest extends TestCase
      */
     public function testGetById()
     {
-<<<<<<< HEAD
-        $return = (object) [
-=======
         $return = [
->>>>>>> feature/transactions
             'id' => 'id',
             'name' => 'teste',
         ];
@@ -68,13 +64,8 @@ class BaseRepositoryTest extends TestCase
         $getById = $baseRepository->getById(1);
 
         $this->assertEquals($return, $getById);
-<<<<<<< HEAD
-        $this->assertEquals($return->id, 'id');
-        $this->assertEquals($return->name, 'teste');
-=======
         $this->assertEquals($return['id'], 'id');
         $this->assertEquals($return['name'], 'teste');
->>>>>>> feature/transactions
     }
 
     /**
@@ -82,11 +73,7 @@ class BaseRepositoryTest extends TestCase
      */
     public function testGetDeadById()
     {
-<<<<<<< HEAD
-        $return = (object) [
-=======
         $return = [
->>>>>>> feature/transactions
             'id' => 'id',
             'name' => 'teste',
         ];
@@ -115,13 +102,8 @@ class BaseRepositoryTest extends TestCase
         $getById = $baseRepository->getDeadById(1);
 
         $this->assertEquals($return, $getById);
-<<<<<<< HEAD
-        $this->assertEquals($return->id, 'id');
-        $this->assertEquals($return->name, 'teste');
-=======
         $this->assertEquals($return['id'], 'id');
         $this->assertEquals($return['name'], 'teste');
->>>>>>> feature/transactions
     }
 
     /**
@@ -414,11 +396,7 @@ class BaseRepositoryTest extends TestCase
         $this->assertEquals($insert, $id);
     }
 
-<<<<<<< HEAD
-        /**
-=======
     /**
->>>>>>> feature/transactions
      * @covers \App\Repositories\BaseRepository::insert
      */
     public function testInsertWithCreated()
@@ -880,8 +858,6 @@ class BaseRepositoryTest extends TestCase
         $this->assertEquals($return, $getBulk);
     }
 
-<<<<<<< HEAD
-=======
     /**
      * @covers \App\Repositories\BaseRepository::beginTrans
      */
@@ -957,7 +933,6 @@ class BaseRepositoryTest extends TestCase
         $this->assertTrue($result);
     }
 
->>>>>>> feature/transactions
     public function tearDown()
     {
         Mockery::close();
