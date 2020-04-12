@@ -1,0 +1,10 @@
+<?php
+
+namespace App\Domains\{{domainCaps}}\Repositories;
+
+use App\Repositories\BaseElasticRepository;
+
+class {{domainCaps}}DeleteElasticRepository extends BaseElasticRepository
+{
+    protected $index = '{{domainOriginal}}';
+}

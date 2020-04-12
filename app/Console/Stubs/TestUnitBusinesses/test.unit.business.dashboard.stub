@@ -1,0 +1,67 @@
+<?php
+
+namespace App\Domains\{{domainCaps}}\Businesses;
+
+use App\Domains\{{domainCaps}}\Repositories\{{domainCaps}}DashboardElasticRepository;
+use Mockery;
+use PHPUnit\Framework\TestCase;
+
+class {{domainCaps}}DashboardBusinessTest extends TestCase
+{
+    /**
+     * @covers \App\Domains\{{domainCaps}}\Businesses\{{domainCaps}}DashboardBusiness::__construct
+     */
+    public function testCreateBusiness()
+    {
+        ${{domain}}DashboardElasticRepositorySpy = Mockery::spy(
+            {{domainCaps}}DashboardElasticRepository::class
+        );
+
+        ${{domain}}DashboardBusiness = new {{domainCaps}}DashboardBusiness(
+            ${{domain}}DashboardElasticRepositorySpy
+        );
+
+        $this->assertInstanceOf(
+            {{domainCaps}}DashboardBusiness::class,
+            ${{domain}}DashboardBusiness
+        );
+    }
+
+    /**
+     * @covers \App\Domains\{{domainCaps}}\Businesses\{{domainCaps}}DashboardBusiness::process
+     */
+    public function testProcess()
+    {
+        ${{domain}}DashboardElasticRepositoryMock = Mockery::mock(
+            {{domainCaps}}DashboardElasticRepository::class
+        )->shouldReceive('getDashboard')
+            ->with(
+                [
+                    'from' => '2020-03-27 12:32:14',
+                    'to' => '2020-03-27 13:32:14',
+                ],
+            )
+            ->andReturn([])
+            ->getMock();
+
+        ${{domain}}DashboardBusiness = new {{domainCaps}}DashboardBusiness(
+            ${{domain}}DashboardElasticRepositoryMock
+        );
+        $business = ${{domain}}DashboardBusiness->process(
+            [
+                'from' => '2020-03-27 12:32:14',
+                'to' => '2020-03-27 13:32:14',
+            ]
+        );
+
+        $this->assertEquals(
+            [],
+            $business
+        );
+    }
+
+    public function tearDown()
+    {
+        Mockery::close();
+    }
+}

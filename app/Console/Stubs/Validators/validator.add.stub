@@ -1,0 +1,36 @@
+<?php
+
+namespace App\Domains\{{domainCaps}}\Http\Validators;
+
+use App\Http\Validators\BaseValidator;
+
+class {{domainCaps}}AddValidator extends BaseValidator
+{
+    /**
+     * get rules for this request
+     * @return array
+     */
+    public function getRules(): array
+    {
+        return [
+            'client_id' => 'required|integer',
+            'client_name' => 'required|string|max:255',
+            'client_slug' => 'required|string|max:63',
+            'sector_id' => 'required|integer',
+            'sector_initials' => 'required|string|max:255',
+            'emissions' => 'required|integer',
+            'solved' => 'required|integer',
+            'not_read' => 'required|integer',
+            'efficiency' => 'required|numeric',
+            'engagement' => 'required|numeric',
+            'users' => 'required|array',
+            'users.*.user_id' => 'required|integer',
+            'users.*.user_email' => 'required|email',
+            'users.*.user_name' => 'required|string|max:255',
+            'location' => 'required|array',
+            'location.*.lat' => 'required|numeric|min:-90|max:90',
+            'location.*.lon' => 'required|numeric|min:-180|max:180',
+            'created' => 'date_format:Y-m-d H:i:s',
+        ];
+    }
+}

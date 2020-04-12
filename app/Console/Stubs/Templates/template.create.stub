@@ -1,0 +1,85 @@
+<?php
+
+namespace App\Templates;
+
+class {{domainCaps}}Template
+{
+    /**
+     * return template
+     * @return array
+     */
+    public function getTemplate()
+    {
+        return [
+            'index_patterns' => [
+                '{{domainOriginal}}-*'
+            ],
+            'mappings' => [
+                '_source' => [
+                    'enabled' => true,
+                ],
+                'properties' => [
+                    'client_id' => [
+                        'type' => 'integer',
+                    ],
+                    'client_name' => [
+                        'type' => 'keyword',
+                    ],
+                    'client_slug' => [
+                        'type' => 'keyword',
+                    ],
+                    'sector_id' => [
+                        'type' => 'integer',
+                    ],
+                    'sector_initials' => [
+                        'type' => 'keyword',
+                    ],
+                    'emissions' => [
+                        'type' => 'integer',
+                    ],
+                    'solved' => [
+                        'type' => 'integer',
+                    ],
+                    'not_read' => [
+                        'type' => 'integer',
+                    ],
+                    'efficiency' => [
+                        'type' => 'float',
+                    ],
+                    'engagement' => [
+                        'type' => 'float',
+                    ],
+                    'users' => [
+                        'type' => 'nested',
+                        'properties' => [
+                            'user_id' => [
+                                'type' => 'integer',
+                            ],
+                            'user_email' => [
+                                'type' => 'keyword',
+                            ],
+                            'user_name' => [
+                                'type' => 'keyword',
+                            ],
+                        ],
+                    ],
+                    'location' => [
+                        'type'=> 'geo_point',
+                    ],
+                    'created' => [
+                        'type'=> 'date',
+                        'format' => 'yyyy-MM-dd HH:mm:ss',
+                    ],
+                    'modified' => [
+                        'type'=> 'date',
+                        'format' => 'yyyy-MM-dd HH:mm:ss',
+                    ],
+                    'deleted' => [
+                        'type'=> 'date',
+                        'format' => 'YYYY-MM-dd HH:mm:ss',
+                    ],
+                ],
+            ],
+        ];
+    }
+}

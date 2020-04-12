@@ -1,0 +1,83 @@
+<?php
+
+namespace App\Domains\{{domainCaps}}\Businesses;
+
+use App\Businesses\BaseBusiness;
+use App\Domains\{{domainCaps}}\Repositories\{{domainCaps}}EditRepository;
+use App\Domains\{{domainCaps}}\Repositories\{{domainCaps}}EditElasticRepository;
+use App\Exceptions\Custom\DataNotFoundException;
+use App\Exceptions\Custom\ElasticException;
+
+class {{domainCaps}}EditBusiness extends BaseBusiness
+{
+    private ${{domain}}EditRepository;
+    private ${{domain}}EditElasticRepository;
+
+    /**
+     * constructor
+     * @param {{domainCaps}}EditRepository ${{domain}}EditRepository
+     * @param {{domainCaps}}EditElasticRepository ${{domain}}EditElasticRepository
+     * @return void
+     */
+    public function __construct(
+        {{domainCaps}}EditRepository ${{domain}}EditRepository,
+        {{domainCaps}}EditElasticRepository ${{domain}}EditElasticRepository
+    ) {
+        $this->{{domain}}EditRepository = ${{domain}}EditRepository;
+        $this->{{domain}}EditElasticRepository = ${{domain}}EditElasticRepository;
+    }
+
+    /**
+     * process the request with business rules
+     * @param array $data
+     * @param string $id
+     * @throws DataNotFoundException
+     * @throws ElasticException
+     * @return array
+     */
+    public function process(
+        array $data,
+        string $id
+    ): array {
+        $exists = $this->{{domain}}EditRepository->getById(
+            $id
+        );
+        if (empty($exists)) {
+            throw new DataNotFoundException;
+        }
+        $exists = $this->decodeJsonFields(
+            $exists,
+            [
+                'users',
+                'location',
+            ]
+        );
+        $saveData = array_merge($exists, $data);
+
+        $this->{{domain}}EditRepository->beginTrans();
+        $this->{{domain}}EditRepository->update(
+            $data,
+            $id
+        );
+
+        $exactIndex = $this->{{domain}}EditElasticRepository->getIndexById(
+            $id
+        );
+        $elasticResult = $this->{{domain}}EditElasticRepository->update(
+            $saveData,
+            $id,
+            $exactIndex
+        );
+
+        if (!$elasticResult) {
+            $this->{{domain}}EditRepository->rollBack();
+            throw new ElasticException(
+                'Error on save into Elasticsearch',
+                500
+            );
+        }
+        $this->{{domain}}EditRepository->commit();
+
+        return $saveData;
+    }
+}

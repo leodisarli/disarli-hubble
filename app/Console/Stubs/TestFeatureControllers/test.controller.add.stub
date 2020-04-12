@@ -1,0 +1,176 @@
+<?php
+
+namespace Tests\Feature\Domains\{{domainCaps}};
+
+use Laravel\Lumen\Testing\DatabaseMigrations;
+use Tests\Feature\TestCaseFeature;
+use Illuminate\Support\Facades\Config;
+
+class {{domainCaps}}AddControllerTest extends TestCaseFeature
+{
+    use DatabaseMigrations;
+
+    /**
+     * @covers \App\Domains\{{domainCaps}}\Http\Controllers\{{domainCaps}}AddController::__construct
+     */
+    public function testRequiredFields()
+    {
+        $this->json('POST', '/{{domainOriginal}}/add', [], $this->header);
+
+        $response = [
+            'message' => 'A validation error occurrs',
+            'data' => [
+                'client_id' => [
+                    'The client id field is required.'
+                ],
+                'client_name' => [
+                    'The client name field is required.'
+                ],
+                'client_slug' => [
+                    'The client slug field is required.'
+                ],
+                'sector_id' => [
+                    'The sector id field is required.'
+                ],
+                'sector_initials' => [
+                    'The sector initials field is required.'
+                ],
+                'emissions' => [
+                    'The emissions field is required.'
+                ],
+                'solved' => [
+                    'The solved field is required.'
+                ],
+                'not_read' => [
+                    'The not read field is required.'
+                ],
+                'efficiency' => [
+                    'The efficiency field is required.'
+                ],
+                'engagement' => [
+                    'The engagement field is required.'
+                ],
+                'users' => [
+                    'The users field is required.'
+                ],
+                'location' => [
+                    'The location field is required.'
+                ],
+            ]
+        ];
+
+        $result = json_decode($this->response->getContent(), true);
+
+        $this->assertEquals(422, $this->response->getStatusCode());
+        $this->assertArrayHasKey('message', $result);
+        $this->assertEquals('A validation error occurrs', $result['message']);
+        $fields = [
+            'client_id',
+            'client_name',
+            'client_slug',
+            'sector_id',
+            'sector_initials',
+            'emissions',
+            'solved',
+            'not_read',
+            'efficiency',
+            'engagement',
+            'users',
+            'location',
+        ];
+        foreach ($fields as $field) {
+            $this->assertEquals($response['data'][$field], $result['data'][$field]);
+        }
+    }
+
+    /**
+     * @covers \App\Domains\{{domainCaps}}\Http\Controllers\{{domainCaps}}AddController::__construct
+     * @covers \App\Domains\{{domainCaps}}\Http\Controllers\{{domainCaps}}AddController::process
+     * @covers \App\Domains\{{domainCaps}}\Businesses\{{domainCaps}}AddBusiness::__construct
+     * @covers \App\Domains\{{domainCaps}}\Businesses\{{domainCaps}}AddBusiness::process
+     */
+    public function testAdd{{domainCaps}}()
+    {
+        $data = [
+            'client_id' => 1,
+            'client_name' => 'Client Test',
+            'client_slug' => 'test',
+            'sector_id' => 1,
+            'sector_initials' => 'Sector Initials',
+            'emissions' => 1,
+            'solved' => 2,
+            'not_read' => 3,
+            'efficiency' => 4.1,
+            'engagement' => 5.1,
+            'users' => [
+                [
+                    'user_id' => 1,
+                    'user_name' => 'User Test',
+                    'user_email' => 'email@user.com',
+                ]
+            ],
+            'location' => [
+                [
+                    'lat' => -22.970722,
+                    'lon' => -43.182365,
+                ]
+            ],
+        ];
+
+        $this->call('options', '/{{domainOriginal}}/add', [], $this->header);
+        $this->json('POST', '/{{domainOriginal}}/add', $data, $this->header);
+
+        $response = json_decode($this->response->getContent(), true);
+
+        $this->assertEquals(201, $this->response->getStatusCode());
+        $this->assertEquals($data['client_name'], $response['data']['client_name']);
+    }
+
+    /**
+     * @covers \App\Domains\{{domainCaps}}\Http\Controllers\{{domainCaps}}AddController::__construct
+     * @covers \App\Domains\{{domainCaps}}\Http\Controllers\{{domainCaps}}AddController::process
+     * @covers \App\Domains\{{domainCaps}}\Businesses\{{domainCaps}}AddBusiness::__construct
+     * @covers \App\Domains\{{domainCaps}}\Businesses\{{domainCaps}}AddBusiness::process
+     */
+    public function testAdd{{domainCaps}}ElasticError()
+    {
+        Config::set('elasticsearch.host', 'hubble-elastic:92001');
+        $data = [
+            'client_id' => 1,
+            'client_name' => 'Client Test',
+            'client_slug' => 'test',
+            'sector_id' => 1,
+            'sector_initials' => 'Sector Initials',
+            'emissions' => 1,
+            'solved' => 2,
+            'not_read' => 3,
+            'efficiency' => 4.1,
+            'engagement' => 5.1,
+            'users' => [
+                [
+                    'user_id' => 1,
+                    'user_name' => 'User Test',
+                    'user_email' => 'email@user.com',
+                ]
+            ],
+            'location' => [
+                [
+                    'lat' => -22.970722,
+                    'lon' => -43.182365,
+                ]
+            ],
+        ];
+
+        $this->call('options', '/{{domainOriginal}}/add', [], $this->header);
+        $this->json('POST', '/{{domainOriginal}}/add', $data, $this->header);
+
+        $result = json_decode($this->response->getContent(), true);
+
+        $this->assertEquals(500, $this->response->getStatusCode());
+        $this->assertArrayHasKey('message', $result);
+        $this->assertEquals(
+            $result['message'],
+            'An unexpected error occurred, please try again later'
+        );
+    }
+}

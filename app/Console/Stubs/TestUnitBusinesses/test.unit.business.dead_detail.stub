@@ -1,0 +1,107 @@
+<?php
+
+namespace App\Domains\{{domainCaps}}\Businesses;
+
+use App\Domains\{{domainCaps}}\Repositories\{{domainCaps}}DeadDetailElasticRepository;
+use App\Exceptions\Custom\DataNotFoundException;
+use Mockery;
+use PHPUnit\Framework\TestCase;
+
+class {{domainCaps}}DeadDetailBusinessTest extends TestCase
+{
+    /**
+     * @covers \App\Domains\{{domainCaps}}\Businesses\{{domainCaps}}DeadDetailBusiness::__construct
+     */
+    public function testCreateBusiness()
+    {
+        ${{domain}}DeadDetailElasticRepositorySpy = Mockery::spy(
+            {{domainCaps}}DeadDetailElasticRepository::class
+        );
+
+        ${{domain}}DeadDetailBusiness = new {{domainCaps}}DeadDetailBusiness(
+            ${{domain}}DeadDetailElasticRepositorySpy
+        );
+
+        $this->assertInstanceOf(
+            {{domainCaps}}DeadDetailBusiness::class,
+            ${{domain}}DeadDetailBusiness
+        );
+    }
+
+    /**
+     * @covers \App\Domains\{{domainCaps}}\Businesses\{{domainCaps}}DeadDetailBusiness::process
+     */
+    public function testProcess()
+    {
+        $id = '01E4KKE1VK2P2FWYVGPTANVFMM';
+        $users = [
+            [
+                'user_id' => 1,
+                'user_email' => 'email@user.com',
+                'user_name' => 'User Name'
+            ]
+        ];
+        $location = [
+            [
+                'lat' => 90,
+                'lon' => 90,
+            ]
+        ];
+        $returnData = [
+            'id' => $id,
+            'client_id' => 1,
+            'users' => json_encode($users),
+            'location' => json_encode($location),
+        ];
+
+        ${{domain}}DeadDetailElasticRepositoryMock = Mockery::mock(
+            {{domainCaps}}DeadDetailElasticRepository::class
+        )->shouldReceive('getDeadById')
+            ->with($id)
+            ->andReturn($returnData)
+            ->getMock();
+
+        ${{domain}}DeadDetailBusiness = new {{domainCaps}}DeadDetailBusiness(
+            ${{domain}}DeadDetailElasticRepositoryMock
+        );
+
+        $process = ${{domain}}DeadDetailBusiness->process(
+            $id
+        );
+
+        $this->assertEquals($returnData, $process);
+    }
+
+    /**
+     * @covers \App\Domains\{{domainCaps}}\Businesses\{{domainCaps}}DeadDetailBusiness::process
+     */
+    public function testProcessAndNotFound()
+    {
+        $id = '01E4KKE1VK2P2FWYVGPTANVFMM';
+
+        ${{domain}}DeadDetailElasticRepositoryMock = Mockery::mock(
+            {{domainCaps}}DeadDetailElasticRepository::class
+        )->shouldReceive('getDeadById')
+            ->with($id)
+            ->andReturn([])
+            ->getMock();
+
+        ${{domain}}DeadDetailBusiness = new {{domainCaps}}DeadDetailBusiness(
+            ${{domain}}DeadDetailElasticRepositoryMock
+        );
+
+        $this->expectExceptionObject(
+            new DataNotFoundException(
+                'Data not found',
+                404
+            )
+        );
+
+        ${{domain}}DeadDetailBusiness->process($id);
+    }
+
+    public function tearDown()
+    {
+        Mockery::close();
+    }
+}

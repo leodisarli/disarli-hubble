@@ -1,0 +1,35 @@
+<?php
+
+namespace App\Domains\{{domainCaps}}\Http\Validators;
+
+use App\Http\Validators\BaseValidator;
+
+class {{domainCaps}}EditValidator extends BaseValidator
+{
+    /**
+     * get rules for this request
+     * @return array
+     */
+    public function getRules() : array
+    {
+        return [
+            'client_id' => 'integer',
+            'client_name' => 'string|max:255',
+            'client_slug' => 'string|max:63',
+            'sector_id' => 'integer',
+            'sector_initials' => 'string|max:255',
+            'emissions' => 'integer',
+            'solved' => 'integer',
+            'not_read' => 'integer',
+            'efficiency' => 'numeric',
+            'engagement' => 'numeric',
+            'users' => 'array',
+            'users.*.user_id' => 'integer',
+            'users.*.user_email' => 'email',
+            'users.*.user_name' => 'string|max:255',
+            'location' => 'array',
+            'location.*.lat' => 'numeric|min:-90|max:90',
+            'location.*.lon' => 'numeric|min:-180|max:180',
+        ];
+    }
+}

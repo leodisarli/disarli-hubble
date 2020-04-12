@@ -1,0 +1,59 @@
+<?php
+
+namespace Tests\Feature\Domains\{{domainCaps}};
+
+use Laravel\Lumen\Testing\DatabaseMigrations;
+use Tests\Feature\TestCaseFeature;
+
+class {{domainCaps}}ListControllerTest extends TestCaseFeature
+{
+    use DatabaseMigrations;
+
+    /**
+     * @covers \App\Domains\{{domainCaps}}\Http\Controllers\{{domainCaps}}ListController::__construct
+     * @covers \App\Domains\{{domainCaps}}\Http\Controllers\{{domainCaps}}ListController::process
+     * @covers \App\Domains\{{domainCaps}}\Businesses\{{domainCaps}}ListBusiness::__construct
+     * @covers \App\Domains\{{domainCaps}}\Businesses\{{domainCaps}}ListBusiness::process
+     */
+    public function testList()
+    {
+        $data = [
+            'client_id' => 1,
+            'client_name' => 'Client Test',
+            'client_slug' => 'test',
+            'sector_id' => 1,
+            'sector_initials' => 'Sector Initials',
+            'emissions' => 1,
+            'solved' => 2,
+            'not_read' => 3,
+            'efficiency' => 4.1,
+            'engagement' => 5.1,
+            'users' => [
+                [
+                    'user_id' => 1,
+                    'user_name' => 'User Test',
+                    'user_email' => 'email@user.com',
+                ]
+            ],
+            'location' => [
+                [
+                    'lat' => -22.970722,
+                    'lon' => -43.182365,
+                ]
+            ],
+        ];
+
+        $this->call('options', '/{{domainOriginal}}/add', [], $this->header);
+        $this->json('POST', '/{{domainOriginal}}/add', $data, $this->header);
+
+        $response = json_decode($this->response->getContent(), true);
+
+        sleep(1);
+        $this->json('GET', '/{{domainOriginal}}/list', [], $this->header);
+
+        $response = json_decode($this->response->getContent(), true);
+
+        $this->assertEquals(200, $this->response->getStatusCode());
+        $this->assertArrayHasKey(0, $response['data']);
+    }
+}

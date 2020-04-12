@@ -1,0 +1,40 @@
+<?php
+
+namespace App\Domains\{{domainCaps}}\Http\Parameters;
+
+use App\Http\Parameters\BaseParameters;
+
+class {{domainCaps}}Parameters extends BaseParameters
+{
+    /**
+     * set allowed fields for this domain
+     */
+    public $fields = [
+        'id',
+        'client_id',
+        'client_name',
+        'client_slug',
+        'sector_id',
+        'sector_initials',
+        'emissions',
+        'solved',
+        'not_read',
+        'efficiency',
+        'engagement',
+        'users',
+        'location',
+        'created',
+        'modified',
+        'deleted',
+    ];
+
+    /**
+     * set allowed orders for this domain
+     */
+    public $order = [
+        'id',
+        'created',
+        'modified',
+        'deleted',
+    ];
+}

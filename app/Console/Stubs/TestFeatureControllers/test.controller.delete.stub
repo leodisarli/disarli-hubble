@@ -1,0 +1,126 @@
+<?php
+
+namespace Tests\Feature\Domains\{{domainCaps}};
+
+use Illuminate\Support\Facades\Config;
+use Laravel\Lumen\Testing\DatabaseMigrations;
+use Tests\Feature\TestCaseFeature;
+
+class {{domainCaps}}DeleteControllerTest extends TestCaseFeature
+{
+    use DatabaseMigrations;
+
+    /**
+     * @covers \App\Domains\{{domainCaps}}\Http\Controllers\{{domainCaps}}DeleteController::__construct
+     * @covers \App\Domains\{{domainCaps}}\Http\Controllers\{{domainCaps}}DeleteController::process
+     * @covers \App\Domains\{{domainCaps}}\Businesses\{{domainCaps}}DeleteBusiness::__construct
+     * @covers \App\Domains\{{domainCaps}}\Businesses\{{domainCaps}}DeleteBusiness::process
+     */
+    public function testDelete()
+    {
+        $data = [
+            'client_id' => 1,
+            'client_name' => 'Client Test',
+            'client_slug' => 'test',
+            'sector_id' => 1,
+            'sector_initials' => 'Sector Initials',
+            'emissions' => 1,
+            'solved' => 2,
+            'not_read' => 3,
+            'efficiency' => 4.1,
+            'engagement' => 5.1,
+            'users' => [
+                [
+                    'user_id' => 1,
+                    'user_name' => 'User Test',
+                    'user_email' => 'email@user.com',
+                ]
+            ],
+            'location' => [
+                [
+                    'lat' => -22.970722,
+                    'lon' => -43.182365,
+                ]
+            ],
+        ];
+
+        $this->json('POST', '/{{domainOriginal}}/add', $data, $this->header);
+        $response = json_decode($this->response->getContent(), true);
+
+        sleep(1);
+        $this->delete('/{{domainOriginal}}/delete/' . $response['data']['id'], [], $this->header);
+
+        $this->assertEquals(204, $this->response->getStatusCode());
+    }
+
+    /**
+     * @covers \App\Domains\{{domainCaps}}\Http\Controllers\{{domainCaps}}DeleteController::__construct
+     * @covers \App\Domains\{{domainCaps}}\Http\Controllers\{{domainCaps}}DeleteController::process
+     * @covers \App\Domains\{{domainCaps}}\Businesses\{{domainCaps}}DeleteBusiness::__construct
+     * @covers \App\Domains\{{domainCaps}}\Businesses\{{domainCaps}}DeleteBusiness::process
+     */
+    public function testDeleteAndNotFound()
+    {
+        $this->json('DELETE', '/{{domainOriginal}}/delete/01E492KQX6BW62YEA45SGWRXYQ', [], $this->header);
+
+        $response = json_decode($this->response->getContent(), true);
+
+        $this->assertEquals(404, $this->response->getStatusCode());
+        $this->assertEquals('Data not found', $response['message']);
+    }
+
+    /**
+     * @covers \App\Domains\{{domainCaps}}\Http\Controllers\{{domainCaps}}DeleteController::__construct
+     * @covers \App\Domains\{{domainCaps}}\Http\Controllers\{{domainCaps}}DeleteController::process
+     * @covers \App\Domains\{{domainCaps}}\Businesses\{{domainCaps}}DeleteBusiness::__construct
+     * @covers \App\Domains\{{domainCaps}}\Businesses\{{domainCaps}}DeleteBusiness::process
+     */
+    public function testDeleteElasticError()
+    {
+        $data = [
+            'client_id' => 1,
+            'client_name' => 'Client Test',
+            'client_slug' => 'test',
+            'sector_id' => 1,
+            'sector_initials' => 'Sector Initials',
+            'emissions' => 1,
+            'solved' => 2,
+            'not_read' => 3,
+            'efficiency' => 4.1,
+            'engagement' => 5.1,
+            'users' => [
+                [
+                    'user_id' => 1,
+                    'user_name' => 'User Test',
+                    'user_email' => 'email@user.com',
+                ]
+            ],
+            'location' => [
+                [
+                    'lat' => -22.970722,
+                    'lon' => -43.182365,
+                ]
+            ],
+        ];
+
+        $this->json('POST', '/{{domainOriginal}}/add', $data, $this->header);
+        $response = json_decode($this->response->getContent(), true);
+
+        sleep(1);
+        Config::set('elasticsearch.host', 'hubble-elastic:92001');
+        $this->delete(
+            '/{{domainOriginal}}/delete/' . $response['data']['id'],
+            [],
+            $this->header
+        );
+        
+        $result = json_decode($this->response->getContent(), true);
+
+        $this->assertEquals(500, $this->response->getStatusCode());
+        $this->assertArrayHasKey('message', $result);
+        $this->assertEquals(
+            $result['message'],
+            'An unexpected error occurred, please try again later'
+        );
+    }
+}

@@ -1,0 +1,1067 @@
+{
+	"info": {
+		"_postman_id": "f34abff6-6147-40ff-8d34-fc5d3278dd2a",
+		"name": "Hubble",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Generate Token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "8b642c07-0cd1-496a-8413-e1be3ec58c1b",
+								"exec": [
+									"var response = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"jwtToken\", response.data.token);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"token\": \"cdf06d00ecaf34c2d85ac60068ad6b86af198340cf7e289c3c33bd95de8f985a\",\n\t\"secret\": \"6b1ed4ec8034dba1ac1a9d30a20a276255f678c78efb66f4262a9f7c1d1231c9\"\n}"
+						},
+						"url": {
+							"raw": "{{Host}}/auth/generate",
+							"host": [
+								"{{Host}}"
+							],
+							"path": [
+								"auth",
+								"generate"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Health",
+			"item": [
+				{
+					"name": "Health API",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{Host}}/health/api",
+							"host": [
+								"{{Host}}"
+							],
+							"path": [
+								"health",
+								"api"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Health DB",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{Host}}/health/db?=",
+							"host": [
+								"{{Host}}"
+							],
+							"path": [
+								"health",
+								"db"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Sector Report",
+			"item": [
+				{
+					"name": "Sector Report Add",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "c16e0c13-123a-45b8-87ca-c6d77a7cb4ca",
+								"exec": [
+									"var response = JSON.parse(responseBody);",
+									"console.log(response);",
+									"postman.setEnvironmentVariable(\"ulid\", response.data.id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{jwtToken}}"
+							},
+							{
+								"key": "Context",
+								"value": "{{context}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n   \"client_id\":1,\n   \"client_name\":\"Client Test\",\n   \"client_slug\":\"test\",\n   \"sector_id\":1,\n   \"sector_initials\":\"Sector Initials\",\n   \"emissions\":1,\n   \"solved\":2,\n   \"not_read\":3,\n   \"efficiency\":4.1,\n   \"engagement\":5.1,\n   \"weighted_emissions\":6,\n   \"weighted_solved\":7,\n   \"weighted_not_read\":8,\n   \"weighted_efficiency\":9.1,\n   \"weighted_engagement\":10.1,\n   \"quality\":9.1,\n   \"evaluations\":8,\n   \"total_users\":1,\n   \"users\":[\n      {\n         \"user_id\":1,\n         \"user_name\":\"User Test\",\n         \"user_email\":\"email@user.com\"\n      }\n   ],\n   \"location\":[\n      {\n         \"lat\":-22.970722,\n         \"lon\":-43.182365\n      }\n   ]\n}"
+						},
+						"url": {
+							"raw": "{{Host}}/sector_report/add",
+							"host": [
+								"{{Host}}"
+							],
+							"path": [
+								"sector_report",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Sector Report Dashboard",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "c16e0c13-123a-45b8-87ca-c6d77a7cb4ca",
+								"exec": [
+									"var response = JSON.parse(responseBody);",
+									"console.log(response);",
+									"postman.setEnvironmentVariable(\"ulid\", response.data.id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{jwtToken}}"
+							},
+							{
+								"key": "Context",
+								"value": "{{context}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"from\": \"2020-03-30 16:12:00\",\n    \"to\": \"2020-03-30 21:14:00\"\n}"
+						},
+						"url": {
+							"raw": "{{Host}}/sector_report/dashboard",
+							"host": [
+								"{{Host}}"
+							],
+							"path": [
+								"sector_report",
+								"dashboard"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Sector Report Bulk",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "3dea6930-b20a-4d02-bc01-bc4f2dc49a9d",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{jwtToken}}"
+							},
+							{
+								"key": "Context",
+								"value": "{{context}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"ids\": [\n    \t\"{{ulid}}\"\n\t]\n}"
+						},
+						"url": {
+							"raw": "{{Host}}/sector_report/bulk",
+							"host": [
+								"{{Host}}"
+							],
+							"path": [
+								"sector_report",
+								"bulk"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Sector Report Edit",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{jwtToken}}"
+							},
+							{
+								"key": "Context",
+								"value": "{{context}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n   \"client_name\":\"Client Test 2\",\n   \"client_slug\":\"test2\"\n}"
+						},
+						"url": {
+							"raw": "{{Host}}/sector_report/edit/{{ulid}}",
+							"host": [
+								"{{Host}}"
+							],
+							"path": [
+								"sector_report",
+								"edit",
+								"{{ulid}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Sector Report List",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "b91ea55a-03c6-44e8-b76e-01cbe3831e96",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{jwtToken}}"
+							},
+							{
+								"key": "Context",
+								"value": "{{context}}"
+							}
+						],
+						"url": {
+							"raw": "{{Host}}/sector_report/list",
+							"host": [
+								"{{Host}}"
+							],
+							"path": [
+								"sector_report",
+								"list"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Sector Report Detail",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{jwtToken}}"
+							},
+							{
+								"key": "Context",
+								"value": "{{context}}"
+							}
+						],
+						"url": {
+							"raw": "{{Host}}/sector_report/detail/{{ulid}}",
+							"host": [
+								"{{Host}}"
+							],
+							"path": [
+								"sector_report",
+								"detail",
+								"{{ulid}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Sector Report Delete",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "7a3a97eb-d70b-4cbb-a524-ee83bf1e57ec",
+								"exec": [
+									"var ulid  = pm.environment.get(\"ulid\");",
+									"postman.setEnvironmentVariable(\"dead-ulid\", ulid);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{jwtToken}}"
+							},
+							{
+								"key": "Context",
+								"value": "{{context}}"
+							}
+						],
+						"url": {
+							"raw": "{{Host}}/sector_report/delete/{{ulid}}",
+							"host": [
+								"{{Host}}"
+							],
+							"path": [
+								"sector_report",
+								"delete",
+								"{{ulid}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Sector Report Dead Detail",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{jwtToken}}"
+							},
+							{
+								"key": "Context",
+								"value": "{{context}}"
+							}
+						],
+						"url": {
+							"raw": "{{Host}}/sector_report/dead_detail/{{dead-ulid}}",
+							"host": [
+								"{{Host}}"
+							],
+							"path": [
+								"sector_report",
+								"dead_detail",
+								"{{dead-ulid}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Sector Report Dead List",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{jwtToken}}"
+							},
+							{
+								"key": "Context",
+								"value": "{{context}}"
+							}
+						],
+						"url": {
+							"raw": "{{Host}}/sector_report/dead_list",
+							"host": [
+								"{{Host}}"
+							],
+							"path": [
+								"sector_report",
+								"dead_list"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "d7ff1f9e-bc1f-4614-ad41-5882802ad6e7",
+						"type": "text/javascript",
+						"exec": [
+							"pm.sendRequest({",
+							"    url: pm.environment.get(\"Host\") + '/auth/generate',",
+							"    method: 'POST',",
+							"    header: {",
+							"        'content-type': 'application/json',",
+							"        'accept': 'application/json'",
+							"    },",
+							"    body: {",
+							"        mode: 'raw',",
+							"        raw: JSON.stringify({ token: pm.environment.get(\"token\"), secret: pm.environment.get(\"secret\") })",
+							"    }",
+							"}, function (err, res) {",
+							"    var result = res.json();",
+							"    postman.setEnvironmentVariable(\"jwtToken\", result.data.token);",
+							"});"
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "f1b259e7-ed24-4c06-bee1-5edcba837a27",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Event",
+			"item": [
+				{
+					"name": "Event Add",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "c16e0c13-123a-45b8-87ca-c6d77a7cb4ca",
+								"exec": [
+									"var response = JSON.parse(responseBody);",
+									"console.log(response);",
+									"postman.setEnvironmentVariable(\"ulid\", response.data.id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{jwtToken}}"
+							},
+							{
+								"key": "Context",
+								"value": "{{context}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Test Event\",\n    \"description\": \"General description\",\n    \"start\": \"2020-03-07 15:00:00\",\n    \"end\": \"2020-03-07 23:00:00\"\n}"
+						},
+						"url": {
+							"raw": "{{Host}}/event/add",
+							"host": [
+								"{{Host}}"
+							],
+							"path": [
+								"event",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Event Bulk",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "3dea6930-b20a-4d02-bc01-bc4f2dc49a9d",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{jwtToken}}"
+							},
+							{
+								"key": "Context",
+								"value": "{{context}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"ids\": [\n    \t\"90075eb2-a25f-4ace-9301-1f8764926bc6\"\n\t]\n}"
+						},
+						"url": {
+							"raw": "{{Host}}/event/bulk",
+							"host": [
+								"{{Host}}"
+							],
+							"path": [
+								"event",
+								"bulk"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Event Edit",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{jwtToken}}"
+							},
+							{
+								"key": "Context",
+								"value": "{{context}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Test Event Change\"\n}"
+						},
+						"url": {
+							"raw": "{{Host}}/event/edit/900763c5-60d5-4450-a79d-263c050c46ed",
+							"host": [
+								"{{Host}}"
+							],
+							"path": [
+								"event",
+								"edit",
+								"900763c5-60d5-4450-a79d-263c050c46ed"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Event List",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "b91ea55a-03c6-44e8-b76e-01cbe3831e96",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{jwtToken}}"
+							},
+							{
+								"key": "Context",
+								"value": "{{context}}"
+							}
+						],
+						"url": {
+							"raw": "{{Host}}/event/list",
+							"host": [
+								"{{Host}}"
+							],
+							"path": [
+								"event",
+								"list"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Event List With Fields, Order, Page and Filter",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{jwtToken}}"
+							},
+							{
+								"key": "Context",
+								"value": "{{context}}"
+							}
+						],
+						"url": {
+							"raw": "{{Host}}/event/list?fields=id,title&order=start&class=asc&page=1&filter_title=lik,test",
+							"host": [
+								"{{Host}}"
+							],
+							"path": [
+								"event",
+								"list"
+							],
+							"query": [
+								{
+									"key": "fields",
+									"value": "id,title"
+								},
+								{
+									"key": "order",
+									"value": "start"
+								},
+								{
+									"key": "class",
+									"value": "asc"
+								},
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "filter_title",
+									"value": "lik,test"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Event Detail",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{jwtToken}}"
+							},
+							{
+								"key": "Context",
+								"value": "{{context}}"
+							}
+						],
+						"url": {
+							"raw": "{{Host}}/event/detail/900763c5-60d5-4450-a79d-263c050c46ed",
+							"host": [
+								"{{Host}}"
+							],
+							"path": [
+								"event",
+								"detail",
+								"900763c5-60d5-4450-a79d-263c050c46ed"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Event Delete",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "7a3a97eb-d70b-4cbb-a524-ee83bf1e57ec",
+								"exec": [
+									"var ulid  = pm.environment.get(\"ulid\");",
+									"postman.setEnvironmentVariable(\"dead-ulid\", ulid);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{jwtToken}}"
+							},
+							{
+								"key": "Context",
+								"value": "{{context}}"
+							}
+						],
+						"url": {
+							"raw": "{{Host}}/event/delete/900763c5-60d5-4450-a79d-263c050c46ed",
+							"host": [
+								"{{Host}}"
+							],
+							"path": [
+								"event",
+								"delete",
+								"900763c5-60d5-4450-a79d-263c050c46ed"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Event Dead Detail",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{jwtToken}}"
+							},
+							{
+								"key": "Context",
+								"value": "{{context}}"
+							}
+						],
+						"url": {
+							"raw": "{{Host}}/event/dead_detail/900763c5-60d5-4450-a79d-263c050c46ed",
+							"host": [
+								"{{Host}}"
+							],
+							"path": [
+								"event",
+								"dead_detail",
+								"900763c5-60d5-4450-a79d-263c050c46ed"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Event Dead List",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{jwtToken}}"
+							},
+							{
+								"key": "Context",
+								"value": "{{context}}"
+							}
+						],
+						"url": {
+							"raw": "{{Host}}/event/dead_list",
+							"host": [
+								"{{Host}}"
+							],
+							"path": [
+								"event",
+								"dead_list"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Event Dead List With Fields, Order, Page and Filters",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{jwtToken}}"
+							},
+							{
+								"key": "Context",
+								"value": "{{context}}"
+							}
+						],
+						"url": {
+							"raw": "{{Host}}/event/dead_list?order=deleted&class=asc&page=1&filter_title=lik,test",
+							"host": [
+								"{{Host}}"
+							],
+							"path": [
+								"event",
+								"dead_list"
+							],
+							"query": [
+								{
+									"key": "order",
+									"value": "deleted"
+								},
+								{
+									"key": "class",
+									"value": "asc"
+								},
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "filter_title",
+									"value": "lik,test"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "d7ff1f9e-bc1f-4614-ad41-5882802ad6e7",
+						"type": "text/javascript",
+						"exec": [
+							"pm.sendRequest({",
+							"    url: pm.environment.get(\"Host\") + '/auth/generate',",
+							"    method: 'POST',",
+							"    header: {",
+							"        'content-type': 'application/json',",
+							"        'accept': 'application/json'",
+							"    },",
+							"    body: {",
+							"        mode: 'raw',",
+							"        raw: JSON.stringify({ token: pm.environment.get(\"token\"), secret: pm.environment.get(\"secret\") })",
+							"    }",
+							"}, function (err, res) {",
+							"    var result = res.json();",
+							"    postman.setEnvironmentVariable(\"jwtToken\", result.data.token);",
+							"});"
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "f1b259e7-ed24-4c06-bee1-5edcba837a27",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"protocolProfileBehavior": {}
+}

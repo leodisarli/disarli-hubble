@@ -1,0 +1,60 @@
+<?php
+
+namespace App\Domains\{{domainCaps}}\Businesses;
+
+use App\Businesses\BaseBusiness;
+use App\Domains\{{domainCaps}}\Repositories\{{domainCaps}}AddRepository;
+use App\Domains\{{domainCaps}}\Repositories\{{domainCaps}}AddElasticRepository;
+use App\Exceptions\Custom\ElasticException;
+
+class {{domainCaps}}AddBusiness extends BaseBusiness
+{
+    private ${{domain}}AddRepository;
+    private ${{domain}}AddElasticRepository;
+
+    /**
+     * constructor
+     * @param {{domainCaps}}AddRepository ${{domain}}AddRepository
+     * @param {{domainCaps}}AddElasticRepository ${{domain}}AddElasticRepository
+     * @return void
+     */
+    public function __construct(
+        {{domainCaps}}AddRepository ${{domain}}AddRepository,
+        {{domainCaps}}AddElasticRepository ${{domain}}AddElasticRepository
+    ) {
+        $this->{{domain}}AddRepository = ${{domain}}AddRepository;
+        $this->{{domain}}AddElasticRepository = ${{domain}}AddElasticRepository;
+    }
+
+    /**
+     * process the request with business rules
+     * @param array $data
+     * @throws ElasticException
+     * @return array
+     */
+    public function process(
+        array $data
+    ): array {
+        $this->{{domain}}AddRepository->beginTrans();
+        $id = $this->{{domain}}AddRepository->insert(
+            $data
+        );
+        $data['id'] = $id;
+        
+        $elasticResult = $this->{{domain}}AddElasticRepository->insert(
+            $data,
+            $id
+        );
+        if (empty($elasticResult)) {
+            $this->{{domain}}AddRepository->rollBack();
+            throw new ElasticException(
+                'Error on save into Elasticsearch',
+                500
+            );
+        }
+        $this->{{domain}}AddRepository->commit();
+        return $this->{{domain}}AddRepository->getById(
+            $id
+        );
+    }
+}

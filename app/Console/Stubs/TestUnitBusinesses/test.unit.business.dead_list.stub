@@ -1,0 +1,80 @@
+<?php
+
+namespace App\Domains\{{domainCaps}}\Businesses;
+
+use App\Domains\{{domainCaps}}\Repositories\{{domainCaps}}DeadListElasticRepository;
+use Mockery;
+use PHPUnit\Framework\TestCase;
+
+class {{domainCaps}}DeadListBusinessTest extends TestCase
+{
+    /**
+     * @covers \App\Domains\{{domainCaps}}\Businesses\{{domainCaps}}DeadListBusiness::__construct
+     */
+    public function testCreateBusiness()
+    {
+        ${{domain}}DeadListElasticRepositorySpy = Mockery::spy(
+            {{domainCaps}}DeadListElasticRepository::class
+        );
+
+        ${{domain}}DeadListBusiness = new {{domainCaps}}DeadListBusiness(
+            ${{domain}}DeadListElasticRepositorySpy
+        );
+
+        $this->assertInstanceOf(
+            {{domainCaps}}DeadListBusiness::class,
+            ${{domain}}DeadListBusiness
+        );
+    }
+
+    /**
+     * @covers \App\Domains\{{domainCaps}}\Businesses\{{domainCaps}}DeadListBusiness::process
+     */
+    public function testProcess()
+    {
+        $id = '01E4E7RTJ3C11B6Z0H0QTJCW04';
+        $users = [
+            [
+                'user_id' => 1,
+                'user_email' => 'email@user.com',
+                'user_name' => 'User Name'
+            ]
+        ];
+        $location = [
+            [
+                'lat' => 90,
+                'lon' => 90,
+            ]
+        ];
+        $returnData = [
+            'id' => $id,
+            'client_id' => 1,
+            'users' => json_encode($users),
+            'location' => json_encode($location),
+        ];
+
+        ${{domain}}DeadDetailRepositoryMock = Mockery::mock(
+            {{domainCaps}}DeadListElasticRepository::class
+        )->shouldReceive('getDeadList')
+            ->withAnyArgs()
+            ->andReturn($returnData)
+            ->getMock();
+
+        ${{domain}}DeadListBusiness = new {{domainCaps}}DeadListBusiness(
+            ${{domain}}DeadDetailRepositoryMock
+        );
+
+        $process = ${{domain}}DeadListBusiness->process(
+            [
+                'page' => 2,
+            ],
+        );
+
+        $this->assertEquals($returnData, $process);
+    }
+
+    public function tearDown()
+    {
+        Mockery::close();
+    }
+}

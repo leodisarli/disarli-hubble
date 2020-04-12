@@ -1,0 +1,77 @@
+<?php
+
+namespace App\Domains\{{domainCaps}}\Businesses;
+
+use App\Businesses\BaseBusiness;
+use App\Domains\{{domainCaps}}\Repositories\{{domainCaps}}DeleteRepository;
+use App\Domains\{{domainCaps}}\Repositories\{{domainCaps}}DeleteElasticRepository;
+use App\Exceptions\Custom\DataNotFoundException;
+use App\Exceptions\Custom\ElasticException;
+
+class {{domainCaps}}DeleteBusiness extends BaseBusiness
+{
+    private ${{domain}}DeleteRepository;
+    private ${{domain}}DeleteElasticRepository;
+
+    /**
+     * constructor
+     * @param {{domainCaps}}DeleteRepository ${{domain}}DeleteRepository
+     * @param {{domainCaps}}DeleteElasticRepository ${{domain}}DeleteElasticRepository
+     * @return void
+     */
+    public function __construct(
+        {{domainCaps}}DeleteRepository ${{domain}}DeleteRepository,
+        {{domainCaps}}DeleteElasticRepository ${{domain}}DeleteElasticRepository
+    ) {
+        $this->{{domain}}DeleteRepository = ${{domain}}DeleteRepository;
+        $this->{{domain}}DeleteElasticRepository = ${{domain}}DeleteElasticRepository;
+    }
+
+    /**
+     * process the request with business rules
+     * @param string $id
+     * @throws DataNotFoundException
+     * @throws ElasticException
+     * @return bool
+     */
+    public function process(
+        string $id
+    ) : bool {
+        $exists = $this->{{domain}}DeleteRepository->getById(
+            $id
+        );
+        if (empty($exists)) {
+            throw new DataNotFoundException;
+        }
+        $exists = $this->decodeJsonFields(
+            $exists,
+            [
+                'users',
+                'location',
+            ]
+        );
+        $this->{{domain}}DeleteRepository->beginTrans();
+        $this->{{domain}}DeleteRepository->delete(
+            $id
+        );
+
+        $exactIndex = $this->{{domain}}DeleteElasticRepository->getIndexById(
+            $id
+        );
+        $elasticResult = $this->{{domain}}DeleteElasticRepository->delete(
+            $exists,
+            $id,
+            $exactIndex
+        );
+
+        if (!$elasticResult) {
+            $this->{{domain}}DeleteRepository->rollBack();
+            throw new ElasticException(
+                'Error on save into Elasticsearch',
+                500
+            );
+        }
+        $this->{{domain}}DeleteRepository->commit();
+        return true;
+    }
+}
