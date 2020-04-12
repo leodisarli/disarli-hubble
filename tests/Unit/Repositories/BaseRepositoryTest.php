@@ -35,7 +35,11 @@ class BaseRepositoryTest extends TestCase
      */
     public function testGetById()
     {
+<<<<<<< HEAD
         $return = (object) [
+=======
+        $return = [
+>>>>>>> feature/transactions
             'id' => 'id',
             'name' => 'teste',
         ];
@@ -64,8 +68,13 @@ class BaseRepositoryTest extends TestCase
         $getById = $baseRepository->getById(1);
 
         $this->assertEquals($return, $getById);
+<<<<<<< HEAD
         $this->assertEquals($return->id, 'id');
         $this->assertEquals($return->name, 'teste');
+=======
+        $this->assertEquals($return['id'], 'id');
+        $this->assertEquals($return['name'], 'teste');
+>>>>>>> feature/transactions
     }
 
     /**
@@ -73,7 +82,11 @@ class BaseRepositoryTest extends TestCase
      */
     public function testGetDeadById()
     {
+<<<<<<< HEAD
         $return = (object) [
+=======
+        $return = [
+>>>>>>> feature/transactions
             'id' => 'id',
             'name' => 'teste',
         ];
@@ -102,8 +115,13 @@ class BaseRepositoryTest extends TestCase
         $getById = $baseRepository->getDeadById(1);
 
         $this->assertEquals($return, $getById);
+<<<<<<< HEAD
         $this->assertEquals($return->id, 'id');
         $this->assertEquals($return->name, 'teste');
+=======
+        $this->assertEquals($return['id'], 'id');
+        $this->assertEquals($return['name'], 'teste');
+>>>>>>> feature/transactions
     }
 
     /**
@@ -396,7 +414,11 @@ class BaseRepositoryTest extends TestCase
         $this->assertEquals($insert, $id);
     }
 
+<<<<<<< HEAD
         /**
+=======
+    /**
+>>>>>>> feature/transactions
      * @covers \App\Repositories\BaseRepository::insert
      */
     public function testInsertWithCreated()
@@ -858,6 +880,84 @@ class BaseRepositoryTest extends TestCase
         $this->assertEquals($return, $getBulk);
     }
 
+<<<<<<< HEAD
+=======
+    /**
+     * @covers \App\Repositories\BaseRepository::beginTrans
+     */
+    public function testBeginTrans()
+    {
+        $dbMock = Mockery::mock(DatabaseManager::class)
+            ->shouldReceive('beginTransaction')
+            ->andReturnSelf()
+            ->getMock();
+
+        $ulidSpy = Mockery::spy(Ulid::class);
+
+        $baseRepository = $this->getMockForAbstractClass(
+            BaseRepository::class,
+            [
+                $dbMock,
+                $ulidSpy
+            ]
+        );
+
+        $result = $baseRepository->beginTrans();
+
+        $this->assertTrue($result);
+    }
+
+    /**
+     * @covers \App\Repositories\BaseRepository::commit
+     */
+    public function testCommit()
+    {
+        $dbMock = Mockery::mock(DatabaseManager::class)
+            ->shouldReceive('commit')
+            ->andReturnSelf()
+            ->getMock();
+
+        $ulidSpy = Mockery::spy(Ulid::class);
+
+        $baseRepository = $this->getMockForAbstractClass(
+            BaseRepository::class,
+            [
+                $dbMock,
+                $ulidSpy
+            ]
+        );
+
+        $result = $baseRepository->commit();
+
+        $this->assertTrue($result);
+    }
+
+    /**
+     * @covers \App\Repositories\BaseRepository::rollBack
+     */
+    public function testRollBack()
+    {
+        $dbMock = Mockery::mock(DatabaseManager::class)
+            ->shouldReceive('rollBack')
+            ->andReturnSelf()
+            ->getMock();
+
+        $ulidSpy = Mockery::spy(Ulid::class);
+
+        $baseRepository = $this->getMockForAbstractClass(
+            BaseRepository::class,
+            [
+                $dbMock,
+                $ulidSpy
+            ]
+        );
+
+        $result = $baseRepository->rollBack();
+
+        $this->assertTrue($result);
+    }
+
+>>>>>>> feature/transactions
     public function tearDown()
     {
         Mockery::close();

@@ -2,11 +2,13 @@
 
 namespace App\Domains\{{domainCaps}}\Businesses;
 
+use App\Businesses\BaseBusiness;
 use App\Domains\{{domainCaps}}\Repositories\{{domainCaps}}EditRepository;
 use App\Domains\{{domainCaps}}\Repositories\{{domainCaps}}EditElasticRepository;
 use App\Exceptions\Custom\DataNotFoundException;
+use App\Exceptions\Custom\ElasticException;
 
-class {{domainCaps}}EditBusiness
+class {{domainCaps}}EditBusiness extends BaseBusiness
 {
     private ${{domain}}EditRepository;
     private ${{domain}}EditElasticRepository;
@@ -29,35 +31,53 @@ class {{domainCaps}}EditBusiness
      * process the request with business rules
      * @param array $data
      * @param string $id
-     * @throws Exception
-     * @return object
+     * @throws DataNotFoundException
+     * @throws ElasticException
+     * @return array
      */
     public function process(
         array $data,
         string $id
-    ) {
+    ): array {
         $exists = $this->{{domain}}EditRepository->getById(
             $id
         );
         if (empty($exists)) {
             throw new DataNotFoundException;
         }
+        $exists = $this->decodeJsonFields(
+            $exists,
+            [
+                'users',
+                'location',
+            ]
+        );
+        $saveData = array_merge($exists, $data);
+
+        $this->{{domain}}EditRepository->beginTrans();
         $this->{{domain}}EditRepository->update(
             $data,
             $id
         );
 
-        $allData = (array) $this->{{domain}}EditRepository->getById(
-            $id
-        );
         $exactIndex = $this->{{domain}}EditElasticRepository->getIndexById(
             $id
         );
-        $this->{{domain}}EditElasticRepository->update(
-            $allData,
+        $elasticResult = $this->{{domain}}EditElasticRepository->update(
+            $saveData,
             $id,
             $exactIndex
         );
-        return $allData;
+
+        if (!$elasticResult) {
+            $this->{{domain}}EditRepository->rollBack();
+            throw new ElasticException(
+                'Error on save into Elasticsearch',
+                500
+            );
+        }
+        $this->{{domain}}EditRepository->commit();
+
+        return $saveData;
     }
 }

@@ -34,16 +34,31 @@ class {{domainCaps}}DeadDetailBusinessTest extends TestCase
     public function testProcess()
     {
         $id = '01E4KKE1VK2P2FWYVGPTANVFMM';
-        $data = [
+        $users = [
+            [
+                'user_id' => 1,
+                'user_email' => 'email@user.com',
+                'user_name' => 'User Name'
+            ]
+        ];
+        $location = [
+            [
+                'lat' => 90,
+                'lon' => 90,
+            ]
+        ];
+        $returnData = [
             'id' => $id,
-            'field' => 'teste',
+            'client_id' => 1,
+            'users' => json_encode($users),
+            'location' => json_encode($location),
         ];
 
         ${{domain}}DeadDetailElasticRepositoryMock = Mockery::mock(
             {{domainCaps}}DeadDetailElasticRepository::class
         )->shouldReceive('getDeadById')
             ->with($id)
-            ->andReturn($data)
+            ->andReturn($returnData)
             ->getMock();
 
         ${{domain}}DeadDetailBusiness = new {{domainCaps}}DeadDetailBusiness(
@@ -54,7 +69,7 @@ class {{domainCaps}}DeadDetailBusinessTest extends TestCase
             $id
         );
 
-        $this->assertEquals($data, $process);
+        $this->assertEquals($returnData, $process);
     }
 
     /**

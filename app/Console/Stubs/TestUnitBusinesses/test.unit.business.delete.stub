@@ -5,6 +5,7 @@ namespace App\Domains\{{domainCaps}}\Businesses;
 use App\Domains\{{domainCaps}}\Repositories\{{domainCaps}}DeleteRepository;
 use App\Domains\{{domainCaps}}\Repositories\{{domainCaps}}DeleteElasticRepository;
 use App\Exceptions\Custom\DataNotFoundException;
+use App\Exceptions\Custom\ElasticException;
 use Mockery;
 use PHPUnit\Framework\TestCase;
 
@@ -38,10 +39,25 @@ class {{domainCaps}}DeleteBusinessTest extends TestCase
      */
     public function testProcess()
     {
-        $id = '01E4E70YSH4J9C0JP8YRJ8SF17';
-        $data = [
+        $id = '01E4E7RTJ3C11B6Z0H0QTJCW04';
+        $users = [
+            [
+                'user_id' => 1,
+                'user_email' => 'email@user.com',
+                'user_name' => 'User Name'
+            ]
+        ];
+        $location = [
+            [
+                'lat' => 90,
+                'lon' => 90,
+            ]
+        ];
+        $returnData = [
             'id' => $id,
-            'field' => 'teste',
+            'client_id' => 1,
+            'users' => json_encode($users),
+            'location' => json_encode($location),
         ];
         $index = 'test-2020-03';
 
@@ -49,10 +65,14 @@ class {{domainCaps}}DeleteBusinessTest extends TestCase
             {{domainCaps}}DeleteRepository::class
         )->shouldReceive('getById')
             ->with($id)
-            ->andReturn((object) $data)
+            ->andReturn($returnData)
+            ->shouldReceive('beginTrans')
+            ->andReturn(true)
             ->shouldReceive('delete')
             ->once()
             ->with($id)
+            ->andReturn(true)
+            ->shouldReceive('commit')
             ->andReturn(true)
             ->getMock();
 
@@ -87,7 +107,7 @@ class {{domainCaps}}DeleteBusinessTest extends TestCase
             {{domainCaps}}DeleteRepository::class
         )->shouldReceive('getById')
             ->with($id)
-            ->andReturn(null)
+            ->andReturn([])
             ->shouldReceive('delete')
             ->never()
             ->with($id)
@@ -110,6 +130,73 @@ class {{domainCaps}}DeleteBusinessTest extends TestCase
             )
         );
 
+        ${{domain}}DeleteBusiness->process(
+            $id
+        );
+    }
+
+    /**
+     * @covers \App\Domains\{{domainCaps}}\Businesses\{{domainCaps}}DeleteBusiness::process
+     */
+    public function testProcessElaticError()
+    {
+        $id = '01E4E7RTJ3C11B6Z0H0QTJCW04';
+        $users = [
+            [
+                'user_id' => 1,
+                'user_email' => 'email@user.com',
+                'user_name' => 'User Name'
+            ]
+        ];
+        $location = [
+            [
+                'lat' => 90,
+                'lon' => 90,
+            ]
+        ];
+        $returnData = [
+            'id' => $id,
+            'client_id' => 1,
+            'users' => json_encode($users),
+            'location' => json_encode($location),
+        ];
+        $index = 'test-2020-03';
+
+        ${{domain}}DeleteRepositoryMock = Mockery::mock(
+            {{domainCaps}}DeleteRepository::class
+        )->shouldReceive('getById')
+            ->with($id)
+            ->andReturn($returnData)
+            ->shouldReceive('beginTrans')
+            ->andReturn(true)
+            ->shouldReceive('delete')
+            ->once()
+            ->with($id)
+            ->andReturn(true)
+            ->shouldReceive('rollBack')
+            ->andReturn(true)
+            ->getMock();
+
+        ${{domain}}AddElasticRepositoryMock = Mockery::mock(
+            {{domainCaps}}DeleteElasticRepository::class
+        )->shouldReceive('getIndexById')
+            ->with($id)
+            ->andReturn($index)
+            ->shouldReceive('delete')
+            ->andReturn(false)
+            ->getMock();
+
+        ${{domain}}DeleteBusiness = new {{domainCaps}}DeleteBusiness(
+            ${{domain}}DeleteRepositoryMock,
+            ${{domain}}AddElasticRepositoryMock
+        );
+
+        $this->expectExceptionObject(
+            new ElasticException(
+                'Error on save into Elasticsearch',
+                500
+            )
+        );
         ${{domain}}DeleteBusiness->process(
             $id
         );

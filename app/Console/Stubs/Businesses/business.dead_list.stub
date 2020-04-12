@@ -2,9 +2,10 @@
 
 namespace App\Domains\{{domainCaps}}\Businesses;
 
+use App\Businesses\BaseBusiness;
 use App\Domains\{{domainCaps}}\Repositories\{{domainCaps}}DeadListElasticRepository;
 
-class {{domainCaps}}DeadListBusiness
+class {{domainCaps}}DeadListBusiness extends BaseBusiness
 {
     private ${{domain}}DeadListElasticRepository;
 

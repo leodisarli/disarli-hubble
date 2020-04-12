@@ -255,12 +255,12 @@ abstract class BaseElasticRepository
     /**
      * insert data
      * @param array $data
-     * @return string
+     * @return string|null
      */
     public function insert(
         array $data,
         string $id = null
-    ): string {
+    ): ?string {
         if (!$id) {
             $id = $this->ulid->generate();
         }
@@ -272,11 +272,16 @@ abstract class BaseElasticRepository
         $data['modified'] = date('Y-m-d H:i:s');
         $postfix = substr($data['created'], 0, 7);
 
-        $this->elastic->postDocument(
+        $elasticResult = $this->elastic->postDocument(
             $this->index . '-' . $postfix,
             $data,
             $id
         );
+        $elasticError = $elasticResult['error_code'] ?? null;
+        if (!is_null($elasticError)) {
+            return null;
+        }
+
         return $id;
     }
 
@@ -294,11 +299,15 @@ abstract class BaseElasticRepository
     ): bool {
         $data['modified'] = date('Y-m-d H:i:s');
 
-        $this->elastic->postDocument(
+        $elasticResult = $this->elastic->postDocument(
             $exactIndex,
             $data,
             $id
         );
+        $elasticError = $elasticResult['error_code'] ?? null;
+        if (!is_null($elasticError)) {
+            return false;
+        }
         return true;
     }
 
@@ -317,11 +326,15 @@ abstract class BaseElasticRepository
         $data['modified'] = date('Y-m-d H:i:s');
         $data['deleted'] = date('Y-m-d H:i:s');
 
-        $this->elastic->postDocument(
+        $elasticResult = $this->elastic->postDocument(
             $exactIndex,
             $data,
             $id
         );
+        $elasticError = $elasticResult['error_code'] ?? null;
+        if (!is_null($elasticError)) {
+            return false;
+        }
         return true;
     }
 

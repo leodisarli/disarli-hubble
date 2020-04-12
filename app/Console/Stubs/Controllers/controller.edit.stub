@@ -37,6 +37,7 @@ class {{domainCaps}}EditController extends BaseController
         Request $request
     ) {
         $data = $request->only($request->validFields);
+        $data = $this->clearArrayFields($data);
         $dataResponse = $this->{{domain}}EditBusiness->process(
             $data,
             $id

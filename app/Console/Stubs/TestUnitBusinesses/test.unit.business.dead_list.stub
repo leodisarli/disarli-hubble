@@ -32,16 +32,32 @@ class {{domainCaps}}DeadListBusinessTest extends TestCase
      */
     public function testProcess()
     {
-        $data = [
-            'id' => '01E4E62TR8CZ64C7JTQXYEK3BY',
-            'field' => 'teste',
+        $id = '01E4E7RTJ3C11B6Z0H0QTJCW04';
+        $users = [
+            [
+                'user_id' => 1,
+                'user_email' => 'email@user.com',
+                'user_name' => 'User Name'
+            ]
+        ];
+        $location = [
+            [
+                'lat' => 90,
+                'lon' => 90,
+            ]
+        ];
+        $returnData = [
+            'id' => $id,
+            'client_id' => 1,
+            'users' => json_encode($users),
+            'location' => json_encode($location),
         ];
 
         ${{domain}}DeadDetailRepositoryMock = Mockery::mock(
             {{domainCaps}}DeadListElasticRepository::class
         )->shouldReceive('getDeadList')
             ->withAnyArgs()
-            ->andReturn($data)
+            ->andReturn($returnData)
             ->getMock();
 
         ${{domain}}DeadListBusiness = new {{domainCaps}}DeadListBusiness(
@@ -54,7 +70,7 @@ class {{domainCaps}}DeadListBusinessTest extends TestCase
             ],
         );
 
-        $this->assertEquals($data, $process);
+        $this->assertEquals($returnData, $process);
     }
 
     public function tearDown()

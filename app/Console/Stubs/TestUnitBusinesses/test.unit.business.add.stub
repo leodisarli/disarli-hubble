@@ -4,6 +4,7 @@ namespace App\Domains\{{domainCaps}}\Businesses;
 
 use App\Domains\{{domainCaps}}\Repositories\{{domainCaps}}AddRepository;
 use App\Domains\{{domainCaps}}\Repositories\{{domainCaps}}AddElasticRepository;
+use App\Exceptions\Custom\ElasticException;
 use Mockery;
 use PHPUnit\Framework\TestCase;
 
@@ -38,18 +39,43 @@ class {{domainCaps}}AddBusinessTest extends TestCase
     public function testProcess()
     {
         $id = '01E4E7RTJ3C11B6Z0H0QTJCW04';
+        $users = [
+            [
+                'user_id' => 1,
+                'user_email' => 'email@user.com',
+                'user_name' => 'User Name'
+            ]
+        ];
+        $location = [
+            [
+                'lat' => 90,
+                'lon' => 90,
+            ]
+        ];
         $data = [
-            'name' => 'test',
+            'id' => $id,
+            'client_id' => 1,
+            'users' => $users,
+            'location' => $location,
+        ];
+        $returnData = [
+            'id' => $id,
+            'client_id' => 1,
+            'users' => json_encode($users),
+            'location' => json_encode($location),
         ];
 
         ${{domain}}AddRepositoryMock = Mockery::mock(
             {{domainCaps}}AddRepository::class
-        )->shouldReceive('insert')
-            ->with($data)
+        )->shouldReceive('beginTrans')
+            ->andReturn(true)
+            ->shouldReceive('insert')
             ->andReturn($id)
             ->shouldReceive('getById')
             ->with($id)
-            ->andReturn($data)
+            ->andReturn($returnData)
+            ->shouldReceive('commit')
+            ->andReturn(true)
             ->getMock();
 
         ${{domain}}AddElasticRepositoryMock = Mockery::mock(
@@ -65,7 +91,72 @@ class {{domainCaps}}AddBusinessTest extends TestCase
 
         $process = ${{domain}}AddBusiness->process($data);
 
-        $this->assertEquals($data, $process);
+        $this->assertEquals($returnData, $process);
+    }
+
+    /**
+     * @covers \App\Domains\{{domainCaps}}\Businesses\{{domainCaps}}AddBusiness::process
+     */
+    public function testProcessErrorOnElastic()
+    {
+        $id = '01E4E7RTJ3C11B6Z0H0QTJCW04';
+        $users = [
+            [
+                'user_id' => 1,
+                'user_email' => 'email@user.com',
+                'user_name' => 'User Name'
+            ]
+        ];
+        $location = [
+            [
+                'lat' => 90,
+                'lon' => 90,
+            ]
+        ];
+        $data = [
+            'id' => $id,
+            'client_id' => 1,
+            'users' => $users,
+            'location' => $location,
+        ];
+        $returnData = [
+            'id' => $id,
+            'client_id' => 1,
+            'users' => json_encode($users),
+            'location' => json_encode($location),
+        ];
+
+        ${{domain}}AddRepositoryMock = Mockery::mock(
+            {{domainCaps}}AddRepository::class
+        )->shouldReceive('beginTrans')
+            ->andReturn(true)
+            ->shouldReceive('insert')
+            ->andReturn($id)
+            ->shouldReceive('getById')
+            ->with($id)
+            ->andReturn($returnData)
+            ->shouldReceive('rollBack')
+            ->andReturn(true)
+            ->getMock();
+
+        ${{domain}}AddElasticRepositoryMock = Mockery::mock(
+            {{domainCaps}}AddElasticRepository::class
+        )->shouldReceive('insert')
+            ->andReturn(null)
+            ->getMock();
+
+        ${{domain}}AddBusiness = new {{domainCaps}}AddBusiness(
+            ${{domain}}AddRepositoryMock,
+            ${{domain}}AddElasticRepositoryMock,
+        );
+
+        $this->expectExceptionObject(
+            new ElasticException(
+                'Error on save into Elasticsearch',
+                500
+            )
+        );
+        ${{domain}}AddBusiness->process($data);
     }
 
     public function tearDown()

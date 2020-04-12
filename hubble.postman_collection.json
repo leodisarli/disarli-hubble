@@ -37,7 +37,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"token\": \"cdf06d00ecaf34c2d85ac60068ad6b86af198340cf7e289c3c33bd95de8f985a\",\n\t\"secret\": \"6b1ed4ec8034dba1ac1a9d30a20a276255f678c78efb66f4262a9f7c1d1231c9\"\n}"
+							"raw": "{\n\t\"token\": \"32c5a206ee876f4c6e1c483457561dbed02a531a89b380c3298bb131a844ac3c\",\n\t\"secret\": \"a1c5930d778e632c6684945ca15bcf3c752d17502d4cfbd1184024be6de14540\"\n}"
 						},
 						"url": {
 							"raw": "{{Host}}/auth/generate",
@@ -162,7 +162,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"test\",\n    \"age\": 18,\n    \"origin_sector\": \"sector\",\n    \"visits\": 5\n}"
+							"raw": "{\n   \"client_id\":1,\n   \"client_name\":\"Client Test\",\n   \"client_slug\":\"test\",\n   \"sector_id\":1,\n   \"sector_initials\":\"Sector Initials\",\n   \"emissions\":1,\n   \"solved\":2,\n   \"not_read\":3,\n   \"efficiency\":4.1,\n   \"engagement\":5.1,\n   \"weighted_emissions\":6,\n   \"weighted_solved\":7,\n   \"weighted_not_read\":8,\n   \"weighted_efficiency\":9.1,\n   \"weighted_engagement\":10.1,\n   \"quality\":9.1,\n   \"evaluations\":8,\n   \"total_users\":1,\n   \"users\":[\n      {\n         \"user_id\":1,\n         \"user_name\":\"User Test\",\n         \"user_email\":\"email@user.com\"\n      }\n   ],\n   \"location\":[\n      {\n         \"lat\":-22.970722,\n         \"lon\":-43.182365\n      }\n   ]\n}"
 						},
 						"url": {
 							"raw": "{{Host}}/example/add",
@@ -305,7 +305,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"test2\",\n    \"age\" : 18\n}"
+							"raw": "{\n   \"client_name\":\"Client Test 2\",\n   \"client_slug\":\"test2\"\n}"
 						},
 						"url": {
 							"raw": "{{Host}}/example/edit/{{ulid}}",

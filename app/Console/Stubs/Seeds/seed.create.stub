@@ -13,28 +13,71 @@ class {{domainCaps}}Seed
         return [
             'index' => '{{domainOriginal}}',
             'fields' => [
-                'name' => [
-                    'type' => 'name',
-                ],
-                'age' => [
+                'client_id' => [
                     'type' => 'integer',
                     'min' => 1,
-                    'max' => 99,
+                    'max' => 32255,
                 ],
-                'origin_sector' => [
+                'client_name' => [
+                    'type' => 'name',
+                ],
+                'client_slug' => [
+                    'type' => 'word',
+                ],
+                'sector_id' => [
+                    'type' => 'integer',
+                    'min' => 1,
+                    'max' => 32255,
+                ],
+                'sector_initials' => [
                     'type' => 'list',
                     'values' => [
-                        'sector1',
-                        'sector2',
-                        'sector3',
-                        'sector4',
-                        'sector5',
+                        'SECTOR-1',
+                        'SECTOR-2',
+                        'SECTOR-3',
+                        'SECTOR-4',
+                        'SECTOR-5',
+                        'SECTOR-6',
+                        'SECTOR-7',
                     ]
                 ],
-                'visits' => [
+                'emissions' => [
+                    'type' => 'integer',
+                    'min' => 1,
+                    'max' => 999,
+                ],
+                'solved' => [
                     'type' => 'integer',
                     'min' => 0,
+                    'max' => 999,
+                ],
+                'not_read' => [
+                    'type' => 'integer',
+                    'min' => 0,
+                    'max' => 999,
+                ],
+                'efficiency' => [
+                    'type' => 'float',
+                    'min' => 0,
                     'max' => 100,
+                ],
+                'engagement' => [
+                    'type' => 'float',
+                    'min' => 0,
+                    'max' => 100,
+                ],
+                'users' => [
+                    'type' => 'fixed',
+                    'value' => [
+                        [
+                            'user_id' => 1,
+                            'user_email' => 'email@user.com',
+                            'user_name' => 'User Name',
+                        ]
+                    ],
+                ],
+                'location' => [
+                    'type' => 'geobr',
                 ],
                 'created' => [
                     'type' => 'date',

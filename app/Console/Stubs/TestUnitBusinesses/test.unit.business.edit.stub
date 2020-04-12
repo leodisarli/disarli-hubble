@@ -5,6 +5,7 @@ namespace App\Domains\{{domainCaps}}\Businesses;
 use App\Domains\{{domainCaps}}\Repositories\{{domainCaps}}EditRepository;
 use App\Domains\{{domainCaps}}\Repositories\{{domainCaps}}EditElasticRepository;
 use App\Exceptions\Custom\DataNotFoundException;
+use App\Exceptions\Custom\ElasticException;
 use Mockery;
 use PHPUnit\Framework\TestCase;
 
@@ -36,9 +37,30 @@ class {{domainCaps}}EditBusinessTest extends TestCase
     public function testProcess()
     {
         $id = '01E4E7RTJ3C11B6Z0H0QTJCW04';
+        $users = [
+            [
+                'user_id' => 1,
+                'user_email' => 'email@user.com',
+                'user_name' => 'User Name'
+            ]
+        ];
+        $location = [
+            [
+                'lat' => 90,
+                'lon' => 90,
+            ]
+        ];
         $data = [
             'id' => $id,
-            'field' => 'teste',
+            'client_id' => 1,
+            'users' => $users,
+            'location' => $location,
+        ];
+        $returnData = [
+            'id' => $id,
+            'client_id' => 1,
+            'users' => json_encode($users),
+            'location' => json_encode($location),
         ];
         $index = 'test-2020-03';
 
@@ -46,9 +68,13 @@ class {{domainCaps}}EditBusinessTest extends TestCase
             {{domainCaps}}EditRepository::class
         )->shouldReceive('getById')
             ->with($id)
-            ->andReturn($data)
+            ->andReturn($returnData)
+            ->shouldReceive('beginTrans')
+            ->andReturn(true)
             ->shouldReceive('update')
             ->with($data, $id)
+            ->andReturn(true)
+            ->shouldReceive('commit')
             ->andReturn(true)
             ->getMock();
 
@@ -81,14 +107,14 @@ class {{domainCaps}}EditBusinessTest extends TestCase
         $id = '01E4E7RTJ3C11B6Z0H0QTJCW04';
         $data = [
             'id' => $id,
-            'field' => 'teste',
+            'client_id' => 1,
         ];
 
         ${{domain}}EditRepositoryMock = Mockery::mock(
             {{domainCaps}}EditRepository::class
         )->shouldReceive('getById')
             ->with($id)
-            ->andReturn(null)
+            ->andReturn([])
             ->shouldReceive('update')
             ->never()
             ->with($data, $id)
@@ -112,6 +138,79 @@ class {{domainCaps}}EditBusinessTest extends TestCase
         );
 
         ${{domain}}EditBusiness->process($data, $id);
+    }
+
+    /**
+     * @covers \App\Domains\{{domainCaps}}\Businesses\{{domainCaps}}EditBusiness::process
+     */
+    public function testProcessElasticError()
+    {
+        $id = '01E4E7RTJ3C11B6Z0H0QTJCW04';
+        $users = [
+            [
+                'user_id' => 1,
+                'user_email' => 'email@user.com',
+                'user_name' => 'User Name'
+            ]
+        ];
+        $location = [
+            [
+                'lat' => 90,
+                'lon' => 90,
+            ]
+        ];
+        $data = [
+            'id' => $id,
+            'client_id' => 1,
+            'users' => $users,
+            'location' => $location,
+        ];
+        $returnData = [
+            'id' => $id,
+            'client_id' => 1,
+            'users' => json_encode($users),
+            'location' => json_encode($location),
+        ];
+
+        $index = 'test-2020-03';
+
+        ${{domain}}EditRepositoryMock = Mockery::mock(
+            {{domainCaps}}EditRepository::class
+        )->shouldReceive('getById')
+            ->with($id)
+            ->andReturn($returnData)
+            ->shouldReceive('beginTrans')
+            ->andReturn(true)
+            ->shouldReceive('update')
+            ->with($data, $id)
+            ->andReturn(true)
+            ->shouldReceive('rollBack')
+            ->andReturn(true)
+            ->getMock();
+
+        ${{domain}}EditElasticRepositoryMock = Mockery::mock(
+            {{domainCaps}}EditElasticRepository::class
+        )->shouldReceive('getIndexById')
+            ->andReturn($index)
+            ->shouldReceive('update')
+            ->andReturn(false)
+            ->getMock();
+
+        ${{domain}}EditBusiness = new {{domainCaps}}EditBusiness(
+            ${{domain}}EditRepositoryMock,
+            ${{domain}}EditElasticRepositoryMock
+        );
+
+        $this->expectExceptionObject(
+            new ElasticException(
+                'Error on save into Elasticsearch',
+                500
+            )
+        );
+        ${{domain}}EditBusiness->process(
+            $data,
+            $id
+        );
     }
 
     public function tearDown()

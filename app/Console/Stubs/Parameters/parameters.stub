@@ -11,10 +11,18 @@ class {{domainCaps}}Parameters extends BaseParameters
      */
     public $fields = [
         'id',
-        'name',
-        'age',
-        'origin_sector',
-        'visits',
+        'client_id',
+        'client_name',
+        'client_slug',
+        'sector_id',
+        'sector_initials',
+        'emissions',
+        'solved',
+        'not_read',
+        'efficiency',
+        'engagement',
+        'users',
+        'location',
         'created',
         'modified',
         'deleted',
@@ -25,7 +33,6 @@ class {{domainCaps}}Parameters extends BaseParameters
      */
     public $order = [
         'id',
-        'name',
         'created',
         'modified',
         'deleted',

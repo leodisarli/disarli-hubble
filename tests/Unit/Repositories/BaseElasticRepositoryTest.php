@@ -423,6 +423,12 @@ class BaseElasticRepositoryTest extends TestCase
             'id' => $id,
             'created' => '2020-01-05 23:34:11',
         ];
+<<<<<<< HEAD
+=======
+        $elasticResult = [
+            '_index' => $id
+        ];
+>>>>>>> feature/transactions
 
         $ulidMock = Mockery::mock(Ulid::class);
         $ulidMock->shouldReceive('generate')
@@ -435,7 +441,11 @@ class BaseElasticRepositoryTest extends TestCase
 
         $elasticMock->shouldReceive('postDocument')
             ->once()
+<<<<<<< HEAD
             ->andReturn(true);
+=======
+            ->andReturn($elasticResult);
+>>>>>>> feature/transactions
 
         $baseElasticRepository = $this->getMockForAbstractClass(
             BaseElasticRepository::class,
@@ -463,6 +473,12 @@ class BaseElasticRepositoryTest extends TestCase
         $data = [
             'id' => $id,
         ];
+<<<<<<< HEAD
+=======
+        $elasticResult = [
+            '_index' => $id
+        ];
+>>>>>>> feature/transactions
 
         $ulidMock = Mockery::mock(Ulid::class);
         $ulidMock->shouldReceive('generate')
@@ -475,7 +491,11 @@ class BaseElasticRepositoryTest extends TestCase
 
         $elasticMock->shouldReceive('postDocument')
             ->once()
+<<<<<<< HEAD
             ->andReturn(true);
+=======
+            ->andReturn($elasticResult);
+>>>>>>> feature/transactions
 
         $baseElasticRepository = $this->getMockForAbstractClass(
             BaseElasticRepository::class,
@@ -495,6 +515,52 @@ class BaseElasticRepositoryTest extends TestCase
     }
 
     /**
+<<<<<<< HEAD
+=======
+     * @covers \App\Repositories\BaseElasticRepository::insert
+     */
+    public function testInsertError()
+    {
+        $id = '01E4DWNQ04V6CRWAKSZP76N4CR';
+        $data = [
+            'id' => $id,
+        ];
+        $elasticResult = [
+            'message' => [],
+            'error_code' => 0,
+        ];
+
+        $ulidMock = Mockery::mock(Ulid::class);
+        $ulidMock->shouldReceive('generate')
+            ->once()
+            ->andReturn($id);
+
+        $elasticMock = Mockery::mock(
+            'overload:SimpleElasticsearch\SimpleElasticsearch'
+        );
+
+        $elasticMock->shouldReceive('postDocument')
+            ->once()
+            ->andReturn($elasticResult);
+
+        $baseElasticRepository = $this->getMockForAbstractClass(
+            BaseElasticRepository::class,
+            [
+                $ulidMock
+            ]
+        );
+
+        $result = $baseElasticRepository->insert(
+            $data
+        );
+
+        $this->assertNull(
+            $result
+        );
+    }
+
+    /**
+>>>>>>> feature/transactions
      * @covers \App\Repositories\BaseElasticRepository::update
      */
     public function testUpdate()
@@ -504,6 +570,12 @@ class BaseElasticRepositoryTest extends TestCase
             'id' => $id,
         ];
         $index = 'test-2020-03';
+<<<<<<< HEAD
+=======
+        $elasticResult = [
+            '_index' => $id
+        ];
+>>>>>>> feature/transactions
 
         $ulidSpy = Mockery::spy(Ulid::class);
         $elasticMock = Mockery::mock(
@@ -512,7 +584,11 @@ class BaseElasticRepositoryTest extends TestCase
 
         $elasticMock->shouldReceive('postDocument')
             ->once()
+<<<<<<< HEAD
             ->andReturn(true);
+=======
+            ->andReturn($elasticResult);
+>>>>>>> feature/transactions
 
         $baseElasticRepository = $this->getMockForAbstractClass(
             BaseElasticRepository::class,
@@ -533,6 +609,51 @@ class BaseElasticRepositoryTest extends TestCase
     }
 
     /**
+<<<<<<< HEAD
+=======
+     * @covers \App\Repositories\BaseElasticRepository::update
+     */
+    public function testUpdateError()
+    {
+        $id = '01E4DWNQ04V6CRWAKSZP76N4CR';
+        $data = [
+            'id' => $id,
+        ];
+        $index = 'test-2020-03';
+        $elasticResult = [
+            'message' => [],
+            'error_code' => 0,
+        ];
+
+        $ulidSpy = Mockery::spy(Ulid::class);
+        $elasticMock = Mockery::mock(
+            'overload:SimpleElasticsearch\SimpleElasticsearch'
+        );
+
+        $elasticMock->shouldReceive('postDocument')
+            ->once()
+            ->andReturn($elasticResult);
+
+        $baseElasticRepository = $this->getMockForAbstractClass(
+            BaseElasticRepository::class,
+            [
+                $ulidSpy
+            ]
+        );
+
+        $result = $baseElasticRepository->update(
+            $data,
+            $id,
+            $index
+        );
+
+        $this->assertFalse(
+            $result
+        );
+    }
+
+    /**
+>>>>>>> feature/transactions
      * @covers \App\Repositories\BaseElasticRepository::delete
      */
     public function testDelete()
@@ -542,6 +663,12 @@ class BaseElasticRepositoryTest extends TestCase
             'id' => $id,
         ];
         $index = 'test-2020-03';
+<<<<<<< HEAD
+=======
+        $elasticResult = [
+            '_index' => $id
+        ];
+>>>>>>> feature/transactions
 
         $ulidSpy = Mockery::spy(Ulid::class);
         $elasticMock = Mockery::mock(
@@ -550,7 +677,11 @@ class BaseElasticRepositoryTest extends TestCase
 
         $elasticMock->shouldReceive('postDocument')
             ->once()
+<<<<<<< HEAD
             ->andReturn(true);
+=======
+            ->andReturn($elasticResult);
+>>>>>>> feature/transactions
 
         $baseElasticRepository = $this->getMockForAbstractClass(
             BaseElasticRepository::class,
@@ -571,6 +702,52 @@ class BaseElasticRepositoryTest extends TestCase
     }
 
     /**
+<<<<<<< HEAD
+=======
+     * @covers \App\Repositories\BaseElasticRepository::delete
+     */
+    public function testDeleteError()
+    {
+        $id = '01E4DWNQ04V6CRWAKSZP76N4CR';
+        $data = [
+            'id' => $id,
+        ];
+        $index = 'test-2020-03';
+        $elasticResult = [
+            'message' => [],
+            'error_code' => 0,
+        ];
+
+
+        $ulidSpy = Mockery::spy(Ulid::class);
+        $elasticMock = Mockery::mock(
+            'overload:SimpleElasticsearch\SimpleElasticsearch'
+        );
+
+        $elasticMock->shouldReceive('postDocument')
+            ->once()
+            ->andReturn($elasticResult);
+
+        $baseElasticRepository = $this->getMockForAbstractClass(
+            BaseElasticRepository::class,
+            [
+                $ulidSpy
+            ]
+        );
+
+        $result = $baseElasticRepository->delete(
+            $data,
+            $id,
+            $index
+        );
+
+        $this->assertFalse(
+            $result
+        );
+    }
+
+    /**
+>>>>>>> feature/transactions
      * @covers \App\Repositories\BaseElasticRepository::decodeMultipleResults
      */
     public function testDecodeMultipleResults()

@@ -19,8 +19,8 @@ class AuthGenerateControllerTest extends TestCaseFeature
     public function testAuthenticate()
     {
         $body = [
-            'token' => 'cdf06d00ecaf34c2d85ac60068ad6b86af198340cf7e289c3c33bd95de8f985a',
-            'secret' => '6b1ed4ec8034dba1ac1a9d30a20a276255f678c78efb66f4262a9f7c1d1231c9',
+            'token' => '32c5a206ee876f4c6e1c483457561dbed02a531a89b380c3298bb131a844ac3c',
+            'secret' => 'a1c5930d778e632c6684945ca15bcf3c752d17502d4cfbd1184024be6de14540',
         ];
 
         $this->json('POST', '/auth/generate', $body);

@@ -248,7 +248,7 @@ class RandomSeedIndexCommand extends BaseCommand
             $this->error('Int parameters min and max must be integer');
             die;
         }
-        return rand($params['min'], $params['max']);
+        return mt_rand($params['min'], $params['max']);
     }
 
     /**
@@ -267,10 +267,10 @@ class RandomSeedIndexCommand extends BaseCommand
             $this->error('Int parameters min and max must be integer');
             die;
         }
-        $int = rand($params['min'], $params['max']);
+        $int = mt_rand($params['min'], $params['max']);
         $decimals = 0;
         if ($int !== $params['max']) {
-            $decimals = rand(0, 99);
+            $decimals = mt_rand(0, 99);
         }
         return (float) $int . '.' . $decimals;
     }
@@ -292,7 +292,7 @@ class RandomSeedIndexCommand extends BaseCommand
             die;
         }
         $last = count($params['values']) - 1;
-        $index = rand(0, $last);
+        $index = mt_rand(0, $last);
         return $params['values'][$index];
     }
 
@@ -316,7 +316,7 @@ class RandomSeedIndexCommand extends BaseCommand
         }
         $firstDay = strtotime($params['min_year'] . '-01-01 00:00:00');
         $lastDay = strtotime($params['max_year'] . '-12-31 23:59:59');
-        $randomTimestamp = rand($firstDay, $lastDay);
+        $randomTimestamp = mt_rand($firstDay, $lastDay);
         return date('Y-m-d H:i:s', $randomTimestamp);
     }
 

@@ -2,9 +2,10 @@
 
 namespace App\Domains\{{domainCaps}}\Businesses;
 
+use App\Businesses\BaseBusiness;
 use App\Domains\{{domainCaps}}\Repositories\{{domainCaps}}ListElasticRepository;
 
-class {{domainCaps}}ListBusiness
+class {{domainCaps}}ListBusiness extends BaseBusiness
 {
     private ${{domain}}ListElasticRepository;
 

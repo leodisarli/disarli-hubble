@@ -186,7 +186,13 @@ class CreateDomainCommand extends BaseCommand
         string $domainCaps,
         string $name
     ) {
-        if ($name != 'Routes' && $name != 'Migrations') {
+        $notCreate = [
+            'Routes',
+            'Migrations',
+            'Templates',
+            'Seeds',
+        ];
+        if (!in_array($name, $notCreate)) {
             $holePath = base_path('app') . '/Domains/' . $domainCaps . $path;
             if (array_key_exists($name, $this->fromRoot)) {
                 $holePath = base_path() . '/tests/' . $this->fromRoot[$name] . '/Domains/' . $domainCaps . $path;

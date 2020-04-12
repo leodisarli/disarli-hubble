@@ -2,10 +2,11 @@
 
 namespace App\Domains\{{domainCaps}}\Businesses;
 
+use App\Businesses\BaseBusiness;
 use App\Domains\{{domainCaps}}\Repositories\{{domainCaps}}DetailElasticRepository;
 use App\Exceptions\Custom\DataNotFoundException;
 
-class {{domainCaps}}DetailBusiness
+class {{domainCaps}}DetailBusiness extends BaseBusiness
 {
     private ${{domain}}DetailElasticRepository;
 
@@ -23,8 +24,8 @@ class {{domainCaps}}DetailBusiness
     /**
      * process the request with business rules
      * @param string $id
-     * @throws Exception
-     * @return object
+     * @throws DataNotFoundException
+     * @return array
      */
     public function process(
         string $id

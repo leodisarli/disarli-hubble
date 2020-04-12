@@ -29,12 +29,12 @@ abstract class BaseRepository
     /**
      * get data by Id
      * @param string $id
-     * @return object
+     * @return array
      */
     public function getById(
         string $id
-    ) {
-        return $this->db->table($this->table)
+    ): array {
+        return (array) $this->db->table($this->table)
             ->whereNull('deleted')
             ->find($id);
     }
@@ -42,12 +42,12 @@ abstract class BaseRepository
     /**
      * get dead data by id
      * @param string $id
-     * @return object
+     * @return array
      */
     public function getDeadById(
         string $id
-    ) {
-        return $this->db->table($this->table)
+    ): array {
+        return (array) $this->db->table($this->table)
             ->whereNotNull('deleted')
             ->find($id);
     }
@@ -217,6 +217,9 @@ abstract class BaseRepository
         array $data,
         string $id
     ): bool {
+        $data = $this->arrayToJson(
+            $data
+        );
         $data['modified'] = date('Y-m-d H:i:s');
         $this->db->table($this->table)
             ->where('id', $id)
@@ -284,12 +287,42 @@ abstract class BaseRepository
      */
     protected function arrayToJson(
         array $data
-    ) {
+    ): array {
         foreach ($data as $field => $value) {
             if (is_array($value)) {
                 $data[$field] = json_encode($value);
             }
         }
         return $data;
+    }
+
+    /**
+     * begin transaction
+     * @return bool
+     */
+    public function beginTrans(): bool
+    {
+        $this->db->beginTransaction();
+        return true;
+    }
+
+    /**
+     * roll back transaction
+     * @return bool
+     */
+    public function rollBack(): bool
+    {
+        $this->db->rollBack();
+        return true;
+    }
+
+    /**
+     * commit transaction
+     * @return bool
+     */
+    public function commit(): bool
+    {
+        $this->db->commit();
+        return true;
     }
 }

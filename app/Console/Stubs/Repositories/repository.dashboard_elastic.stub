@@ -17,26 +17,46 @@ class {{domainCaps}}DashboardElasticRepository extends BaseElasticRepository
         array $data
     ): array {
         $aggregations = [
-            "total" => [
+            "total_documents" => [
                 "value_count" => [
                     "field" => "_id",
                 ],
             ],
-            "per_age" => [
+            "per_client" => [
                 "terms" => [
-                    "field" => "age",
+                    "field" => "client_id",
                 ],
             ],
             "per_origin_sector" => [
                 "terms" => [
-                    "field" => "origin_sector",
+                    "field" => "sector_initials",
                 ],
             ],
-            "total_visits" => [
+            "total_emissions" => [
                 "sum" => [
-                    "field" => "visits",
+                    "field" => "emissions",
                 ],
-            ]
+            ],
+            "total_solved" => [
+                "sum" => [
+                    "field" => "solved",
+                ],
+            ],
+            "total_not_read" => [
+                "sum" => [
+                    "field" => "not_read",
+                ],
+            ],
+            "average_efficiency" => [
+                "avg" => [
+                    "field" => "efficiency",
+                ],
+            ],
+            "average_engagement" => [
+                "avg" => [
+                    "field" => "engagement",
+                ],
+            ],
         ];
 
         $query = [

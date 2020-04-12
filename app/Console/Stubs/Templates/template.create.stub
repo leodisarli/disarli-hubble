@@ -19,17 +19,52 @@ class {{domainCaps}}Template
                     'enabled' => true,
                 ],
                 'properties' => [
-                    'name' => [
-                        'type' => 'keyword',
-                    ],
-                    'age' => [
+                    'client_id' => [
                         'type' => 'integer',
                     ],
-                    'origin_sector' => [
+                    'client_name' => [
                         'type' => 'keyword',
                     ],
-                    'visits' => [
+                    'client_slug' => [
+                        'type' => 'keyword',
+                    ],
+                    'sector_id' => [
                         'type' => 'integer',
+                    ],
+                    'sector_initials' => [
+                        'type' => 'keyword',
+                    ],
+                    'emissions' => [
+                        'type' => 'integer',
+                    ],
+                    'solved' => [
+                        'type' => 'integer',
+                    ],
+                    'not_read' => [
+                        'type' => 'integer',
+                    ],
+                    'efficiency' => [
+                        'type' => 'float',
+                    ],
+                    'engagement' => [
+                        'type' => 'float',
+                    ],
+                    'users' => [
+                        'type' => 'nested',
+                        'properties' => [
+                            'user_id' => [
+                                'type' => 'integer',
+                            ],
+                            'user_email' => [
+                                'type' => 'keyword',
+                            ],
+                            'user_name' => [
+                                'type' => 'keyword',
+                            ],
+                        ],
+                    ],
+                    'location' => [
+                        'type'=> 'geo_point',
                     ],
                     'created' => [
                         'type'=> 'date',

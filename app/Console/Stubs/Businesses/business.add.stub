@@ -2,10 +2,12 @@
 
 namespace App\Domains\{{domainCaps}}\Businesses;
 
+use App\Businesses\BaseBusiness;
 use App\Domains\{{domainCaps}}\Repositories\{{domainCaps}}AddRepository;
 use App\Domains\{{domainCaps}}\Repositories\{{domainCaps}}AddElasticRepository;
+use App\Exceptions\Custom\ElasticException;
 
-class {{domainCaps}}AddBusiness
+class {{domainCaps}}AddBusiness extends BaseBusiness
 {
     private ${{domain}}AddRepository;
     private ${{domain}}AddElasticRepository;
@@ -27,22 +29,30 @@ class {{domainCaps}}AddBusiness
     /**
      * process the request with business rules
      * @param array $data
-     * @return object
+     * @throws ElasticException
+     * @return array
      */
     public function process(
         array $data
-    ) {
+    ): array {
+        $this->{{domain}}AddRepository->beginTrans();
         $id = $this->{{domain}}AddRepository->insert(
             $data
         );
+        $data['id'] = $id;
         
-        $insertedData = (array) $this->{{domain}}AddRepository->getById(
+        $elasticResult = $this->{{domain}}AddElasticRepository->insert(
+            $data,
             $id
         );
-        $this->{{domain}}AddElasticRepository->insert(
-            $insertedData,
-            $id
-        );
+        if (empty($elasticResult)) {
+            $this->{{domain}}AddRepository->rollBack();
+            throw new ElasticException(
+                'Error on save into Elasticsearch',
+                500
+            );
+        }
+        $this->{{domain}}AddRepository->commit();
         return $this->{{domain}}AddRepository->getById(
             $id
         );

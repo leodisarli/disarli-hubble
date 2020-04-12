@@ -33,17 +33,32 @@ class {{domainCaps}}DetailBusinessTest extends TestCase
      */
     public function testProcess()
     {
-        $id = '01E4E7K2Q6697S8SJVVFY5KCQ7';
-        $data = [
+        $id = '01E4E7RTJ3C11B6Z0H0QTJCW04';
+        $users = [
+            [
+                'user_id' => 1,
+                'user_email' => 'email@user.com',
+                'user_name' => 'User Name'
+            ]
+        ];
+        $location = [
+            [
+                'lat' => 90,
+                'lon' => 90,
+            ]
+        ];
+        $returnData = [
             'id' => $id,
-            'field' => 'teste',
+            'client_id' => 1,
+            'users' => json_encode($users),
+            'location' => json_encode($location),
         ];
 
         ${{domain}}DetailElasticRepositoryMock = Mockery::mock(
             {{domainCaps}}DetailElasticRepository::class
         )->shouldReceive('getById')
             ->with($id)
-            ->andReturn($data)
+            ->andReturn($returnData)
             ->getMock();
 
         ${{domain}}DetailBusiness = new {{domainCaps}}DetailBusiness(
@@ -54,7 +69,7 @@ class {{domainCaps}}DetailBusinessTest extends TestCase
             $id
         );
 
-        $this->assertEquals($data, $process);
+        $this->assertEquals($returnData, $process);
     }
 
     /**

@@ -13,10 +13,23 @@ class {{domainCaps}}EditValidator extends BaseValidator
     public function getRules() : array
     {
         return [
-            'name' => 'string|max:50',
-            'age' => 'integer|min:1|max:99',
-            'origin_sector' => 'string|max:100',
-            'visits' => 'integer',
+            'client_id' => 'integer',
+            'client_name' => 'string|max:255',
+            'client_slug' => 'string|max:63',
+            'sector_id' => 'integer',
+            'sector_initials' => 'string|max:255',
+            'emissions' => 'integer',
+            'solved' => 'integer',
+            'not_read' => 'integer',
+            'efficiency' => 'numeric',
+            'engagement' => 'numeric',
+            'users' => 'array',
+            'users.*.user_id' => 'integer',
+            'users.*.user_email' => 'email',
+            'users.*.user_name' => 'string|max:255',
+            'location' => 'array',
+            'location.*.lat' => 'numeric|min:-90|max:90',
+            'location.*.lon' => 'numeric|min:-180|max:180',
         ];
     }
 }

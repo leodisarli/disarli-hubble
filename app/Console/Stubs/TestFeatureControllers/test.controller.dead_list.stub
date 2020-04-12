@@ -18,10 +18,29 @@ class {{domainCaps}}DeadListControllerTest extends TestCaseFeature
     public function testList()
     {
         $data = [
-            'name' => 'test',
-            'age' => 18,
-            'origin_sector' => 'test',
-            'visits' => 16,
+            'client_id' => 1,
+            'client_name' => 'Client Test',
+            'client_slug' => 'test',
+            'sector_id' => 1,
+            'sector_initials' => 'Sector Initials',
+            'emissions' => 1,
+            'solved' => 2,
+            'not_read' => 3,
+            'efficiency' => 4.1,
+            'engagement' => 5.1,
+            'users' => [
+                [
+                    'user_id' => 1,
+                    'user_name' => 'User Test',
+                    'user_email' => 'email@user.com',
+                ]
+            ],
+            'location' => [
+                [
+                    'lat' => -22.970722,
+                    'lon' => -43.182365,
+                ]
+            ],
         ];
 
         $this->call('options', '/{{domainOriginal}}/add', [], $this->header);

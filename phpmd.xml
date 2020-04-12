@@ -48,4 +48,5 @@
     <exclude-pattern>app/Console/Commands/*</exclude-pattern>
     <exclude-pattern>app/Seeds/*</exclude-pattern>
     <exclude-pattern>app/Templates/*</exclude-pattern>
+    <exclude-pattern>app/Domains/*/Repositories/*DashboardElasticRepository.php</exclude-pattern>
 </ruleset>

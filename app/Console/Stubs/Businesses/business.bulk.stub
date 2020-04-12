@@ -2,9 +2,10 @@
 
 namespace App\Domains\{{domainCaps}}\Businesses;
 
+use App\Businesses\BaseBusiness;
 use App\Domains\{{domainCaps}}\Repositories\{{domainCaps}}BulkElasticRepository;
 
-class {{domainCaps}}BulkBusiness
+class {{domainCaps}}BulkBusiness extends BaseBusiness
 {
     private ${{domain}}BulkElasticRepository;
 

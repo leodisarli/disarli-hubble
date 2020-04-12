@@ -35,6 +35,7 @@ class {{domainCaps}}AddController extends BaseController
         Request $request
     ) {
         $data = $request->only($request->validFields);
+        $data = $this->clearArrayFields($data);
         $dataResponse = $this->{{domain}}AddBusiness->process(
             $data
         );
